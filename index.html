@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Калькулятор акций — Инвестиции просто</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #3B3FBF;
+    --green-light: #4A4ED0;
+    --green-bg: rgba(59,63,191,0.07);
+    --green-border: rgba(59,63,191,0.15);
+    --green-border-strong: rgba(59,63,191,0.3);
+    --black: #1a1a2e;
+    --dark: #2D2F6B;
+    --muted: #6b7280;
+    --border: #ddd8ce;
+    --bg-card: #ffffff;
+    --bg-page: #F5F0E8;
+    --white: #ffffff;
+    --warm: #E5A100;
+    --warm-bg: rgba(245,200,66,0.12);
+    --warm-border: rgba(245,200,66,0.35);
+    --red: #c0392b;
+    --red-bg: rgba(192,57,43,0.06);
+    --red-border: rgba(192,57,43,0.15);
+    --score-green: #2e8b57;
+    --score-green-bg: rgba(46,139,87,0.10);
+    --score-green-border: rgba(46,139,87,0.30);
+    --score-yellow: #d49a00;
+    --score-yellow-bg: rgba(212,154,0,0.10);
+    --score-yellow-border: rgba(212,154,0,0.30);
+    --score-red: #c0392b;
+    --score-red-bg: rgba(192,57,43,0.08);
+    --score-red-border: rgba(192,57,43,0.30);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-page); color: var(--black);
+    min-height: 100vh; padding: 0 0 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 28px 20px 20px; display: flex; align-items: center; gap: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-logo {
+    width: 44px; height: 44px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .header-logo svg { width: 40px; height: 40px; }
+  .header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: var(--black); }
+  .header p { font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 500; }
+
+  /* TABS */
+  .tabs {
+    display: flex; gap: 0; padding: 0 20px;
+    border-bottom: 1px solid var(--border); overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 14px 20px; border: none; background: transparent;
+    color: var(--muted); font-size: 13px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    border-bottom: 2px solid transparent; letter-spacing: 0.2px;
+    font-family: inherit;
+  }
+  .tab.active { color: var(--green); border-bottom-color: var(--green); }
+  .tab:hover { color: var(--black); }
+
+  /* CONTENT */
+  .content { padding: 20px; max-width: 600px; margin: 0 auto; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* SECTION */
+  .section-title {
+    font-size: 11px; font-weight: 700; color: var(--green); margin: 0 0 18px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .section-title-warm { color: var(--warm); }
+
+  /* INPUT GROUPS */
+  .input-group { margin-bottom: 18px; }
+  .input-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.6px;
+  }
+  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .input-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .input-field {
+    width: 100%; padding: 12px 14px; background: var(--bg-card);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--black); font-size: 16px; font-weight: 600; font-family: inherit;
+    outline: none; transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .input-field:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-bg), 0 1px 2px rgba(0,0,0,0.04); }
+  .input-field::placeholder { color: #c0c0c0; font-weight: 400; }
+  .input-wrap { position: relative; }
+  .input-suffix {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 13px; font-weight: 500; pointer-events: none;
+  }
+  .input-wrap .input-field { padding-right: 38px; }
+  .input-field.zone-green { border-color: var(--score-green-border); background: var(--score-green-bg); }
+  .input-field.zone-yellow { border-color: var(--score-yellow-border); background: var(--score-yellow-bg); }
+  .input-field.zone-red { border-color: var(--score-red-border); background: var(--score-red-bg); }
+
+  /* HINT BUTTON */
+  .hint-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: transparent; border: 1.5px solid var(--green-border-strong);
+    color: var(--green); font-size: 10px; font-weight: 700;
+    cursor: pointer; flex-shrink: 0; line-height: 1; transition: all 0.2s;
+    font-family: inherit;
+  }
+  .hint-btn:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+
+  /* HINT POPUP */
+  .hint-popup {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999; align-items: flex-end; justify-content: center;
+    background: rgba(0,0,0,0.3); padding: 16px;
+  }
+  .hint-popup.show { display: flex; }
+  .hint-content {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 16px 16px 4px 4px; padding: 24px; max-width: 400px;
+    width: 100%; font-size: 14px; line-height: 1.7; color: var(--dark);
+    max-height: 60vh; overflow-y: auto;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+  }
+  .hint-content b { color: var(--black); }
+  .hint-close {
+    display: block; width: 100%; margin-top: 16px; padding: 12px;
+    background: var(--green); border: none; border-radius: 8px;
+    color: var(--white); font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* RESULTS */
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .result-card {
+    padding: 16px 18px; border-radius: 12px; background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+  .result-card.highlight {
+    background: var(--green-bg); border-color: var(--green-border-strong);
+  }
+  .result-label {
+    font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 5px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .result-value { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.5px; }
+  .result-card.highlight .result-value { color: var(--green); }
+  .result-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* SCORE BLOCK */
+  .score-hero {
+    padding: 24px 20px; border-radius: 16px; background: var(--bg-card);
+    border: 1px solid var(--border); margin-bottom: 16px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .score-hero.zone-green { background: var(--score-green-bg); border-color: var(--score-green-border); }
+  .score-hero.zone-yellow { background: var(--score-yellow-bg); border-color: var(--score-yellow-border); }
+  .score-hero.zone-red { background: var(--score-red-bg); border-color: var(--score-red-border); }
+  .score-label {
+    font-size: 11px; color: var(--muted); font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .score-value { font-size: 56px; font-weight: 800; letter-spacing: -2px; line-height: 1; color: var(--black); }
+  .score-value-max { font-size: 24px; color: var(--muted); font-weight: 700; }
+  .score-verdict { font-size: 15px; font-weight: 700; margin-top: 8px; }
+  .score-hero.zone-green .score-verdict { color: var(--score-green); }
+  .score-hero.zone-yellow .score-verdict { color: var(--score-yellow); }
+  .score-hero.zone-red .score-verdict { color: var(--score-red); }
+  .score-tagline { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+  /* BLOCKS BREAKDOWN */
+  .breakdown-block {
+    padding: 16px; border-radius: 12px; background: var(--bg-card);
+    border: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .breakdown-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .breakdown-title {
+    font-size: 13px; font-weight: 700; color: var(--black);
+  }
+  .breakdown-points {
+    font-size: 13px; font-weight: 800; color: var(--green);
+  }
+  .breakdown-bar-wrap {
+    height: 6px; background: var(--green-bg); border-radius: 3px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .breakdown-bar { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.4s ease; }
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; font-size: 13px;
+  }
+  .metric-row + .metric-row { border-top: 1px solid var(--border); }
+  .metric-name { color: var(--dark); font-weight: 500; }
+  .metric-value-wrap { display: flex; align-items: center; gap: 8px; }
+  .metric-value { font-weight: 700; color: var(--black); font-size: 13px; }
+  .metric-zone {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .metric-zone.zone-green { background: var(--score-green); }
+  .metric-zone.zone-yellow { background: var(--score-yellow); }
+  .metric-zone.zone-red { background: var(--score-red); }
+  .metric-zone.zone-gray { background: #d0d0d0; }
+
+  /* QUALITATIVE CHECKBOXES */
+  .qual-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .qual-item {
+    display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: all 0.15s; font-size: 13px;
+  }
+  .qual-item:hover { border-color: var(--green-border-strong); }
+  .qual-item.checked { background: var(--green-bg); border-color: var(--green-border-strong); }
+  .qual-item input { margin-top: 2px; flex-shrink: 0; accent-color: var(--green); }
+  .qual-item-text { color: var(--dark); line-height: 1.5; }
+
+  /* COMPARE */
+  .compare-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+  .btn-add {
+    padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--green);
+    background: transparent; color: var(--green); font-size: 12px;
+    font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+    font-family: inherit;
+  }
+  .btn-add:hover { background: var(--green); color: var(--white); }
+  .compare-card {
+    padding: 16px; border-radius: 12px; background: var(--bg-card);
+    border: 1px solid var(--border); margin-bottom: 12px;
+  }
+  .compare-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .compare-name {
+    background: transparent; border: none; color: var(--black);
+    font-size: 15px; font-weight: 700; outline: none; width: 70%; font-family: inherit;
+  }
+  .btn-remove { background: transparent; border: none; color: var(--red); font-size: 18px; cursor: pointer; opacity: 0.5; font-family: inherit; }
+  .btn-remove:hover { opacity: 1; }
+  .compare-stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; }
+  .compare-chip {
+    padding: 4px 10px; border-radius: 8px; background: var(--green-bg);
+    color: var(--dark); font-weight: 600; border: 1px solid var(--green-border);
+  }
+  .compare-score-row {
+    padding-top: 12px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .compare-score-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .compare-score-value { font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: -1px; }
+  .compare-verdict-pill {
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 12px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .compare-verdict-pill.zone-green { background: var(--score-green-bg); color: var(--score-green); }
+  .compare-verdict-pill.zone-yellow { background: var(--score-yellow-bg); color: var(--score-yellow); }
+  .compare-verdict-pill.zone-red { background: var(--score-red-bg); color: var(--score-red); }
+
+  /* MOEX SEARCH */
+  .moex-search-wrap { display: flex; gap: 8px; }
+  .moex-input { flex: 1; font-weight: 500 !important; font-size: 14px !important; }
+  .moex-search-btn {
+    padding: 12px 20px; background: var(--green); color: var(--white);
+    border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    font-family: inherit; letter-spacing: 0.3px;
+  }
+  .moex-search-btn:hover { background: var(--green-light); }
+  .moex-search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .moex-results { margin-top: 10px; max-height: 380px; overflow-y: auto; scroll-behavior: smooth; }
+  .moex-show-all-btn {
+    display: block; width: 100%; margin-top: 6px; padding: 12px;
+    background: var(--green-bg); border: 1.5px dashed var(--green-border-strong);
+    border-radius: 10px; color: var(--green); font-size: 13px;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: all 0.2s; letter-spacing: 0.2px;
+  }
+  .moex-show-all-btn:hover { background: var(--green); color: var(--white); border-style: solid; }
+  .moex-item {
+    padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 6px; cursor: pointer; transition: all 0.15s;
+    background: var(--bg-card);
+  }
+  .moex-item:hover { border-color: var(--green-border-strong); background: var(--green-bg); }
+  .moex-item-name { font-size: 14px; font-weight: 700; color: var(--black); }
+  .moex-item-ticker { font-size: 12px; color: var(--green); font-weight: 600; margin-left: 6px; }
+  .moex-item-details { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .moex-status { margin-top: 8px; font-size: 12px; color: var(--muted); min-height: 18px; }
+  .moex-status.error { color: var(--red); }
+  .moex-status.success { color: var(--green); }
+
+  /* INFO BOX */
+  .info-box {
+    padding: 14px 16px; border-radius: 12px;
+    background: var(--warm-bg); border: 1px solid var(--warm-border);
+    margin-bottom: 16px; font-size: 13px; color: var(--dark); line-height: 1.55;
+  }
+  .info-box b { color: var(--black); }
+
+  /* EXPORT BUTTON */
+  .export-btn {
+    width: 100%; padding: 14px; margin-top: 8px;
+    background: var(--white); color: var(--green);
+    border: 1.5px solid var(--green); border-radius: 10px;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    font-family: inherit; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .export-btn:hover { background: var(--green); color: var(--white); }
+
+  /* SECURITY INFO BLOCK */
+  .ticker-info {
+    padding: 16px 18px; border-radius: 12px;
+    background: var(--green-bg); border: 1px solid var(--green-border-strong);
+    margin-bottom: 16px;
+  }
+  .ticker-info-name { font-size: 16px; font-weight: 800; color: var(--black); }
+  .ticker-info-ticker { color: var(--green); font-weight: 700; margin-left: 6px; font-size: 13px; }
+  .ticker-info-meta {
+    margin-top: 8px; font-size: 12px; color: var(--muted);
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+  .ticker-info-meta span b { color: var(--dark); font-weight: 600; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);
+    text-align: center; font-size: 11px; color: var(--muted); opacity: 0.7;
+    line-height: 1.7; letter-spacing: 0.2px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 400px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .result-value { font-size: 19px; }
+    .score-value { font-size: 48px; }
+  }
+
+  /* ACCESS GATE */
+  .access-gate {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #f3f8f5 0%, #ffffff 100%);
+    z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .access-gate-card {
+    background: var(--white); border-radius: 16px; padding: 32px 24px;
+    max-width: 400px; width: 100%; text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    border: 1px solid var(--border);
+  }
+  .access-gate-card h2 {
+    font-size: 18px; font-weight: 800; color: var(--black);
+    margin-bottom: 12px; letter-spacing: -0.3px;
+  }
+  .access-gate-card p { font-size: 14px; color: var(--dark); line-height: 1.6; margin-bottom: 18px; }
+  .access-gate-card input {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 15px; font-family: inherit; font-weight: 500;
+    margin-bottom: 12px; outline: none;
+  }
+  .access-gate-card input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-bg); }
+  .access-gate-card button {
+    width: 100%; padding: 12px; background: var(--green); color: var(--white);
+    border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: opacity 0.2s;
+  }
+  .access-gate-card button:hover { opacity: 0.9; }
+  .access-gate-error { color: var(--red); font-size: 13px; margin-top: 8px; }
+  .access-gate-footer { font-size: 11px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
+  .access-gate-hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ACCESS GATE (только для ?access=academy) -->
+<div class="access-gate access-gate-hidden" id="accessGate">
+  <div class="access-gate-card" id="accessGateCard">
+    <h2>Загрузка…</h2>
+    <p>Проверяем доступ.</p>
+  </div>
+</div>
+
+<!-- HINT POPUP -->
+<div class="hint-popup" id="hintPopup">
+  <div class="hint-content" id="hintContentBox">
+    <div id="hintText"></div>
+    <button class="hint-close" id="hintCloseBtn">Понятно</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+    <rect width="44" height="44" rx="12" fill="#3B3FBF"/>
+    <path d="M8 22c0-4.4 3.1-8 7-8s7 3.6 7 8-3.1 8-7 8-7-3.6-7-8zm14 0c0-4.4 3.1-8 7-8s7 3.6 7 8-3.1 8-7 8-7-3.6-7-8z" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  </svg></div>
+  <div>
+    <h1>Калькулятор акций</h1>
+    <p>Академия «Инвестиции просто»</p>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('calc')">Калькулятор</button>
+  <button class="tab" onclick="switchTab('score')">Скоринг</button>
+  <button class="tab" onclick="switchTab('compare')">Сравнение</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ===== КАЛЬКУЛЯТОР ===== -->
+  <div class="tab-content active" id="tab-calc">
+
+    <div class="section-title">Поиск акции</div>
+
+    <div class="input-group">
+      <div class="input-label">Тикер или название <button class="hint-btn" data-hint="ticker">?</button></div>
+      <div class="moex-search-wrap">
+        <input class="input-field moex-input" type="text" id="moexSearch" placeholder="напр. SBER, Лукойл, Газпром" autocomplete="off">
+        <button class="moex-search-btn" id="moexSearchBtn">Найти</button>
+      </div>
+      <div id="moexResults" class="moex-results"></div>
+      <div id="moexStatus" class="moex-status"></div>
+    </div>
+
+    <div id="tickerInfo" class="ticker-info" style="display:none">
+      <div>
+        <span class="ticker-info-name" id="tiName">—</span>
+        <span class="ticker-info-ticker" id="tiTicker">—</span>
+      </div>
+      <div class="ticker-info-meta">
+        <span>Цена: <b id="tiPrice">—</b></span>
+        <span>Капа: <b id="tiCap">—</b></span>
+        <span>Сектор: <b id="tiSector">—</b></span>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">Тип компании</div>
+    <label class="qual-item" id="bankModeWrap" style="margin-bottom: 4px">
+      <input type="checkbox" id="bankMode">
+      <span class="qual-item-text"><b>Это банк или финансовая компания</b> — у банков высокий Debt/Equity по природе бизнеса, для них эта метрика исключается из скоринга, а вес перераспределяется между ROE и ROA.</span>
+    </label>
+
+    <div class="section-title" style="margin-top:24px">Финансовые показатели</div>
+
+    <div class="info-box">
+      <b>Откуда брать цифры:</b> отчётность МСФО на сайте эмитента, smart-lab.ru, conomy.ru или раздел «Аналитика» в брокерском приложении. Скоро подключим автоподтяжку фундаменталки — будет считаться само.
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">P/E <button class="hint-btn" data-hint="pe">?</button></div>
+        <input class="input-field" type="number" id="pe" step="0.1" placeholder="напр. 4.5">
+      </div>
+      <div class="input-group">
+        <div class="input-label">P/B <button class="hint-btn" data-hint="pb">?</button></div>
+        <input class="input-field" type="number" id="pb" step="0.1" placeholder="напр. 0.8">
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">P/S <button class="hint-btn" data-hint="ps">?</button></div>
+        <input class="input-field" type="number" id="ps" step="0.1" placeholder="напр. 1.2">
+      </div>
+      <div class="input-group">
+        <div class="input-label">ROE <button class="hint-btn" data-hint="roe">?</button></div>
+        <div class="input-wrap">
+          <input class="input-field" type="number" id="roe" step="0.1" placeholder="напр. 18">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">ROA <button class="hint-btn" data-hint="roa">?</button></div>
+        <div class="input-wrap">
+          <input class="input-field" type="number" id="roa" step="0.1" placeholder="напр. 8">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="input-group" id="deWrap">
+        <div class="input-label">Debt/Equity <button class="hint-btn" data-hint="de">?</button></div>
+        <input class="input-field" type="number" id="de" step="0.01" placeholder="напр. 0.45">
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">Дивдоходность <button class="hint-btn" data-hint="div">?</button></div>
+        <div class="input-wrap">
+          <input class="input-field" type="number" id="div" step="0.1" placeholder="напр. 9">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Рост выручки YoY <button class="hint-btn" data-hint="revGrowth">?</button></div>
+        <div class="input-wrap">
+          <input class="input-field" type="number" id="revGrowth" step="0.1" placeholder="напр. 12">
+          <span class="input-suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div class="input-label">Рост чистой прибыли YoY <button class="hint-btn" data-hint="profitGrowth">?</button></div>
+      <div class="input-wrap">
+        <input class="input-field" type="number" id="profitGrowth" step="0.1" placeholder="напр. 18">
+        <span class="input-suffix">%</span>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">Качественные факторы</div>
+    <div class="info-box">
+      Отметь то, что верно для компании. Каждый ответ «да» добавляет 0,5 балла к итогу.
+    </div>
+
+    <div class="qual-list">
+      <label class="qual-item" data-qual="sector">
+        <input type="checkbox">
+        <span class="qual-item-text"><b>Сектор устойчив</b> — компания работает в стабильной отрасли (нефтегаз, банки, металлы, ритейл, телеком), а не в чём-то нишевом и зависимом от одной идеи.</span>
+      </label>
+      <label class="qual-item" data-qual="strategy">
+        <input type="checkbox">
+        <span class="qual-item-text"><b>Понятная стратегия</b> — у компании есть прозрачный план развития, опубликован в годовом отчёте или презентациях для инвесторов.</span>
+      </label>
+      <label class="qual-item" data-qual="governance">
+        <input type="checkbox">
+        <span class="qual-item-text"><b>Корпуправление в порядке</b> — независимые директора в совете, отчётность по МСФО регулярная, нет скандалов с миноритариями.</span>
+      </label>
+      <label class="qual-item" data-qual="divPolicy">
+        <input type="checkbox">
+        <span class="qual-item-text"><b>Есть дивидендная политика</b> — компания платила дивиденды последние 3+ года и публикует политику с понятной формулой.</span>
+      </label>
+      <label class="qual-item" data-qual="cleanHistory">
+        <input type="checkbox">
+        <span class="qual-item-text"><b>Чистая история</b> — не было дефолтов, делистинга, реорганизаций со списанием стоимости акций за последние 5 лет.</span>
+      </label>
+    </div>
+
+    <button class="export-btn" onclick="exportToExcel()" style="margin-top:24px">📊 Скачать в Excel</button>
+
+  </div>
+
+  <!-- ===== СКОРИНГ ===== -->
+  <div class="tab-content" id="tab-score">
+
+    <div class="score-hero" id="scoreHero">
+      <div class="score-label">Итоговая оценка</div>
+      <div>
+        <span class="score-value" id="scoreValue">0,0</span><span class="score-value-max">/10</span>
+      </div>
+      <div class="score-verdict" id="scoreVerdict">Заполните данные на вкладке «Калькулятор»</div>
+      <div class="score-tagline" id="scoreTagline">Чем больше полей заполнено — тем точнее оценка.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">Разбор по блокам</div>
+
+    <!-- BLOCK 1: МУЛЬТИПЛИКАТОРЫ -->
+    <div class="breakdown-block">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Мультипликаторы</div>
+        <div class="breakdown-points"><span id="block1-pts">0,0</span>/2,5</div>
+      </div>
+      <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="block1-bar" style="width:0%"></div></div>
+      <div class="metric-row">
+        <span class="metric-name">P/E</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-pe">—</span><span class="metric-zone zone-gray" id="z-pe"></span></span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">P/B</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-pb">—</span><span class="metric-zone zone-gray" id="z-pb"></span></span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">P/S</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-ps">—</span><span class="metric-zone zone-gray" id="z-ps"></span></span>
+      </div>
+    </div>
+
+    <!-- BLOCK 2: ФИНЗДОРОВЬЕ -->
+    <div class="breakdown-block">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Финансовое здоровье <span id="bankBadge" style="display:none;font-size:10px;font-weight:700;background:var(--warm-bg);color:var(--warm);padding:2px 7px;border-radius:8px;margin-left:6px;letter-spacing:0.4px;text-transform:uppercase">банк</span></div>
+        <div class="breakdown-points"><span id="block2-pts">0,0</span>/2,5</div>
+      </div>
+      <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="block2-bar" style="width:0%"></div></div>
+      <div class="metric-row">
+        <span class="metric-name">ROE</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-roe">—</span><span class="metric-zone zone-gray" id="z-roe"></span></span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">ROA</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-roa">—</span><span class="metric-zone zone-gray" id="z-roa"></span></span>
+      </div>
+      <div class="metric-row" id="row-de">
+        <span class="metric-name">Debt/Equity</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-de">—</span><span class="metric-zone zone-gray" id="z-de"></span></span>
+      </div>
+    </div>
+
+    <!-- BLOCK 3: РОСТ И ДИВЫ -->
+    <div class="breakdown-block">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Рост и дивиденды</div>
+        <div class="breakdown-points"><span id="block3-pts">0,0</span>/2,5</div>
+      </div>
+      <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="block3-bar" style="width:0%"></div></div>
+      <div class="metric-row">
+        <span class="metric-name">Дивдоходность</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-div">—</span><span class="metric-zone zone-gray" id="z-div"></span></span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Рост выручки</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-revGrowth">—</span><span class="metric-zone zone-gray" id="z-revGrowth"></span></span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Рост прибыли</span>
+        <span class="metric-value-wrap"><span class="metric-value" id="m-profitGrowth">—</span><span class="metric-zone zone-gray" id="z-profitGrowth"></span></span>
+      </div>
+    </div>
+
+    <!-- BLOCK 4: КАЧЕСТВЕННЫЕ -->
+    <div class="breakdown-block">
+      <div class="breakdown-header">
+        <div class="breakdown-title">Качественные факторы</div>
+        <div class="breakdown-points"><span id="block4-pts">0,0</span>/2,5</div>
+      </div>
+      <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="block4-bar" style="width:0%"></div></div>
+      <div class="metric-row" id="qual-summary" style="border-top:none">
+        <span class="metric-name" style="color: var(--muted); font-size: 12px;">Отмечено пунктов: <b id="qualCount" style="color: var(--black)">0</b> из 5</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== СРАВНЕНИЕ ===== -->
+  <div class="tab-content" id="tab-compare">
+    <div class="compare-header">
+      <div class="section-title" style="margin:0">Сравнение акций</div>
+      <button class="btn-add" onclick="addToCompare()">+ Добавить текущую</button>
+    </div>
+    <div class="info-box">
+      Заполни данные на вкладке «Калькулятор» и нажми «+ Добавить текущую» — акция попадёт в сравнение. Можно сложить несколько и сравнить итоговые баллы.
+    </div>
+    <div id="compareList"></div>
+  </div>
+
+  <div class="footer">
+    Калькулятор акций · Академия «Инвестиции просто»<br>
+    Не является индивидуальной инвестиционной рекомендацией.
+  </div>
+
+</div>
+
+<script>
+// ==================== ACCESS GATE (Telegram + Supabase) ====================
+const SUPABASE_URL = 'https://hlpfobpuwvoiuxdvhczb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_O79mqg9_orMs5h_Nsw9d1Q_vhC_yVio';
+const CHECK_ACCESS_FN = SUPABASE_URL + '/functions/v1/check-access';
+
+(function setupAccessGate(){
+  var params = new URLSearchParams(location.search);
+  if (params.get('access') !== 'academy') return;
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var gate = document.getElementById('accessGate');
+    var card = document.getElementById('accessGateCard');
+    if (!gate || !card) return;
+    gate.classList.remove('access-gate-hidden');
+
+    var tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg || !tg.initData) {
+      card.innerHTML = '<h2>Доступ только через бот</h2>' +
+        '<p>Этот калькулятор доступен ученикам академии «Инвестиции просто». Откройте бот и зайдите через кнопку «Калькулятор акций».</p>' +
+        '<button onclick="window.open(\'https://t.me/invest_prosto_obligi_bot\', \'_blank\')">Открыть бот</button>';
+      return;
+    }
+
+    tg.ready();
+    tg.expand();
+    checkAccess(tg.initData, null);
+
+    async function checkAccess(initData, email) {
+      renderLoading();
+      try {
+        var res = await fetch(CHECK_ACCESS_FN, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+          body: JSON.stringify({ init_data: initData, email: email })
+        });
+        var data = await res.json();
+        handleResponse(data, initData);
+      } catch (e) {
+        renderError('Не удалось связаться с сервером. Попробуйте ещё раз.');
+      }
+    }
+
+    function handleResponse(data, initData) {
+      if (data.ok && data.status === 'active') { gate.classList.add('access-gate-hidden'); return; }
+      if (data.status === 'need_email') { renderEmailForm(initData); return; }
+      if (data.status === 'email_not_found') { renderError('Мы не нашли подписку по этому email. Проверьте, что ввели тот же email, на который куплен курс. Или напишите куратору.'); return; }
+      if (data.status === 'email_already_bound') { renderError('Этот email уже привязан к другому Telegram-аккаунту. Если это ошибка — напишите куратору.'); return; }
+      if (data.status === 'expired') { renderExpired(data.expires_at); return; }
+      renderError(data.error || 'Неизвестная ошибка. Обратитесь к куратору.');
+    }
+
+    function renderLoading() { card.innerHTML = '<h2>Проверяем доступ…</h2><p>Секундочку.</p>'; }
+
+    function renderEmailForm(initData) {
+      card.innerHTML =
+        '<h2>Здравствуйте, ученик!</h2>' +
+        '<p>Введите email, на который куплен курс в Академии «Инвестиции просто». Мы свяжем его с вашим Telegram — это нужно сделать только один раз.</p>' +
+        '<input type="email" id="emailInput" placeholder="email@example.com" autocomplete="email">' +
+        '<button id="emailSubmit">Подтвердить</button>' +
+        '<div class="access-gate-error" id="accessError"></div>';
+      var input = document.getElementById('emailInput');
+      var btn = document.getElementById('emailSubmit');
+      btn.addEventListener('click', function(){ checkAccess(initData, input.value.trim()); });
+      input.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); btn.click(); } });
+      setTimeout(function(){ input.focus(); }, 100);
+    }
+
+    function renderExpired(expiresAt) {
+      var d = expiresAt ? new Date(expiresAt).toLocaleDateString('ru-RU') : '';
+      card.innerHTML =
+        '<h2>Подписка закончилась</h2>' +
+        '<p>Ваш доступ к калькулятору истёк' + (d ? ' ' + d : '') + '. Чтобы продолжить пользоваться — продлите доступ в академии.</p>' +
+        '<button onclick="window.open(\'https://t.me/invest_prosto_obligi_bot\', \'_blank\')">Написать в бот</button>';
+    }
+
+    function renderError(msg) {
+      card.innerHTML = '<h2>Доступ закрыт</h2><p>' + msg + '</p><button onclick="location.reload()">Попробовать ещё раз</button>';
+    }
+  });
+})();
+
+// ==================== ПОДСКАЗКИ ====================
+const HINTS = {
+  ticker: "<b>Тикер</b> — короткий код акции на бирже. У Сбербанка — SBER, у Лукойла — LKOH, у Газпрома — GAZP. Можно вводить и название — найдёт.",
+  pe: "<b>P/E (Price-to-Earnings)</b> — отношение цены акции к прибыли на акцию. Показывает, за сколько лет компания окупит свою рыночную капитализацию из текущей прибыли.<br><br>Чем меньше — тем дешевле. Для российского рынка нормально P/E до 5–10. Считается: рыночная капа ÷ чистая прибыль за 12 месяцев.",
+  pb: "<b>P/B (Price-to-Book)</b> — отношение цены к балансовой стоимости капитала.<br><br>P/B < 1 — акция торгуется дешевле бухгалтерской стоимости активов компании, это часто признак недооценки. P/B > 2 — рынок верит в будущий рост сильнее, чем видно из баланса.",
+  ps: "<b>P/S (Price-to-Sales)</b> — отношение цены к выручке.<br><br>Полезен, когда у компании временно нет прибыли, но выручка стабильная. Чем меньше — тем дешевле. Для российских компаний нормально 0,5–2.",
+  roe: "<b>ROE (Return on Equity)</b> — рентабельность собственного капитала. Показывает, сколько прибыли компания делает на каждый рубль капитала акционеров.<br><br>15% и выше — отличный бизнес. Меньше 8% — компания плохо использует капитал.",
+  roa: "<b>ROA (Return on Assets)</b> — рентабельность активов. Сколько прибыли компания делает на каждый рубль всех активов (собственных + заёмных).<br><br>7% и выше — хорошо, меньше 3% — слабо.",
+  de: "<b>Debt/Equity</b> — отношение долга к собственному капиталу. Показывает финансовый рычаг компании.<br><br>До 0,5 — низкая долговая нагрузка, компания устойчива. Выше 1,5 — высокий долг, в кризис могут быть проблемы с обслуживанием.",
+  div: "<b>Дивидендная доходность</b> — годовой дивиденд ÷ цена акции, в процентах.<br><br>Российский рынок — рынок «дивидендных коров»: 8% и выше считается хорошей доходностью. Но обязательно проверь стабильность выплат: разовый высокий дивиденд может быть ловушкой.",
+  revGrowth: "<b>Рост выручки YoY (год к году)</b> — насколько выросла выручка за последний отчётный период по сравнению с тем же периодом год назад.<br><br>15% и выше — отличный рост. Меньше 5% — стагнация. Минус — тревожный звонок.",
+  profitGrowth: "<b>Рост чистой прибыли YoY</b> — то же, но по чистой прибыли.<br><br>Прибыль — это то, что в итоге достанется акционерам. Минусовый рост = сокращение прибыли = красная зона."
+};
+
+// ==================== ПОРОГИ СКОРИНГА ====================
+// Зелёный = +1.0 от веса, Жёлтый = +0.5 от веса, Красный = 0
+// Каждая метрика весит 0.833 балла (3 метрики по блоку × 0.833 = 2.5)
+// Качественные: 5 чекбоксов × 0.5 = 2.5
+const W = 2.5 / 3; // вес одной метрики в блоке
+
+// "lower" — чем меньше тем лучше; "higher" — чем больше тем лучше
+const THRESHOLDS = {
+  pe:           { dir: 'lower',  green: 5,    red: 10 },
+  pb:           { dir: 'lower',  green: 1,    red: 2 },
+  ps:           { dir: 'lower',  green: 1,    red: 2 },
+  roe:          { dir: 'higher', green: 15,   red: 8 },
+  roa:          { dir: 'higher', green: 7,    red: 3 },
+  de:           { dir: 'lower',  green: 0.5,  red: 1.5 },
+  div:          { dir: 'higher', green: 8,    red: 5 },
+  revGrowth:    { dir: 'higher', green: 15,   red: 5 },
+  profitGrowth: { dir: 'higher', green: 15,   red: 0 }
+};
+
+function zoneFor(metric, value) {
+  if (value === null || value === undefined || isNaN(value)) return 'gray';
+  var t = THRESHOLDS[metric];
+  if (!t) return 'gray';
+  if (t.dir === 'lower') {
+    if (value <= t.green) return 'green';
+    if (value <= t.red) return 'yellow';
+    return 'red';
+  } else {
+    if (value >= t.green) return 'green';
+    if (value >= t.red) return 'yellow';
+    return 'red';
+  }
+}
+
+function pointsForZone(zone) {
+  if (zone === 'green') return W;
+  if (zone === 'yellow') return W / 2;
+  return 0;
+}
+
+function fmtNum(v, suffix) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  var num = Number(v);
+  var formatted = Math.abs(num) >= 100 ? num.toFixed(0) : num.toFixed(2).replace(/\.?0+$/, '');
+  return formatted.replace('.', ',') + (suffix || '');
+}
+
+// ==================== СБОР ДАННЫХ ИЗ ФОРМЫ ====================
+function getInputValue(id) {
+  var el = document.getElementById(id);
+  if (!el || el.value === '') return null;
+  var v = parseFloat(el.value.replace(',', '.'));
+  return isNaN(v) ? null : v;
+}
+
+function getQualState() {
+  var qual = {};
+  document.querySelectorAll('.qual-item').forEach(function(el){
+    qual[el.dataset.qual] = el.querySelector('input').checked;
+  });
+  return qual;
+}
+
+function getCurrentSnapshot() {
+  var bankCheckbox = document.getElementById('bankMode');
+  return {
+    ticker: currentTicker || '',
+    name: currentName || '',
+    isBank: bankCheckbox ? bankCheckbox.checked : false,
+    pe: getInputValue('pe'),
+    pb: getInputValue('pb'),
+    ps: getInputValue('ps'),
+    roe: getInputValue('roe'),
+    roa: getInputValue('roa'),
+    de: getInputValue('de'),
+    div: getInputValue('div'),
+    revGrowth: getInputValue('revGrowth'),
+    profitGrowth: getInputValue('profitGrowth'),
+    qual: getQualState()
+  };
+}
+
+// ==================== РАСЧЁТ СКОРА ====================
+function calcScore(snap) {
+  var metrics = ['pe','pb','ps','roe','roa','de','div','revGrowth','profitGrowth'];
+  var zones = {};
+  var pts = {};
+  metrics.forEach(function(m){
+    zones[m] = zoneFor(m, snap[m]);
+    pts[m] = pointsForZone(zones[m]);
+  });
+
+  var block1 = pts.pe + pts.pb + pts.ps;
+
+  // Для банков D/E исключаем — вес перераспределяется на ROE и ROA (по 1.25 балла каждая)
+  var block2;
+  if (snap.isBank) {
+    var BANK_W = 2.5 / 2;
+    block2 = (zones.roe === 'green' ? BANK_W : zones.roe === 'yellow' ? BANK_W/2 : 0) +
+             (zones.roa === 'green' ? BANK_W : zones.roa === 'yellow' ? BANK_W/2 : 0);
+    zones.de = 'gray';
+    pts.de = 0;
+  } else {
+    block2 = pts.roe + pts.roa + pts.de;
+  }
+
+  var block3 = pts.div + pts.revGrowth + pts.profitGrowth;
+
+  var qualCount = 0;
+  Object.keys(snap.qual || {}).forEach(function(k){ if (snap.qual[k]) qualCount++; });
+  var block4 = qualCount * 0.5;
+
+  var total = block1 + block2 + block3 + block4;
+
+  return {
+    zones: zones, pts: pts,
+    block1: block1, block2: block2, block3: block3, block4: block4,
+    qualCount: qualCount,
+    isBank: snap.isBank,
+    total: total
+  };
+}
+
+function verdict(total) {
+  if (total >= 8) return { zone: 'green', text: 'Достойно изучения дальше', tag: 'Большинство показателей в зелёной зоне. Можно копать глубже: смотреть отчёты, читать стратегию, проверять инсайдеров.' };
+  if (total >= 5) return { zone: 'yellow', text: 'Спорная история', tag: 'Есть и плюсы и минусы. Нужно понимать, какие метрики тебе важнее, и не идеализировать компанию.' };
+  return { zone: 'red', text: 'Лучше пропустить', tag: 'Слишком много красных зон. Если очень хочется — фиксируй риски и обоснуй сама себе, почему не пропускаешь.' };
+}
+
+// ==================== ОТРИСОВКА СКОРИНГА ====================
+function setMetricRow(id, value, zone, suffix) {
+  var mEl = document.getElementById('m-' + id);
+  var zEl = document.getElementById('z-' + id);
+  if (mEl) mEl.textContent = fmtNum(value, suffix);
+  if (zEl) zEl.className = 'metric-zone zone-' + zone;
+
+  var input = document.getElementById(id);
+  if (input) {
+    input.classList.remove('zone-green','zone-yellow','zone-red');
+    if (value !== null && zone !== 'gray') input.classList.add('zone-' + zone);
+  }
+}
+
+function renderScore() {
+  var snap = getCurrentSnapshot();
+  var s = calcScore(snap);
+
+  // Банковский режим: D/E поле и строка скрываются, метка «банк» показывается
+  var deWrap = document.getElementById('deWrap');
+  var rowDe = document.getElementById('row-de');
+  var bankBadge = document.getElementById('bankBadge');
+  if (deWrap) deWrap.style.display = snap.isBank ? 'none' : '';
+  if (rowDe) rowDe.style.display = snap.isBank ? 'none' : 'flex';
+  if (bankBadge) bankBadge.style.display = snap.isBank ? 'inline-block' : 'none';
+
+  setMetricRow('pe', snap.pe, s.zones.pe);
+  setMetricRow('pb', snap.pb, s.zones.pb);
+  setMetricRow('ps', snap.ps, s.zones.ps);
+  setMetricRow('roe', snap.roe, s.zones.roe, '%');
+  setMetricRow('roa', snap.roa, s.zones.roa, '%');
+  setMetricRow('de', snap.de, s.zones.de);
+  setMetricRow('div', snap.div, s.zones.div, '%');
+  setMetricRow('revGrowth', snap.revGrowth, s.zones.revGrowth, '%');
+  setMetricRow('profitGrowth', snap.profitGrowth, s.zones.profitGrowth, '%');
+
+  document.getElementById('block1-pts').textContent = s.block1.toFixed(1).replace('.',',');
+  document.getElementById('block2-pts').textContent = s.block2.toFixed(1).replace('.',',');
+  document.getElementById('block3-pts').textContent = s.block3.toFixed(1).replace('.',',');
+  document.getElementById('block4-pts').textContent = s.block4.toFixed(1).replace('.',',');
+
+  document.getElementById('block1-bar').style.width = (s.block1 / 2.5 * 100) + '%';
+  document.getElementById('block2-bar').style.width = (s.block2 / 2.5 * 100) + '%';
+  document.getElementById('block3-bar').style.width = (s.block3 / 2.5 * 100) + '%';
+  document.getElementById('block4-bar').style.width = (s.block4 / 2.5 * 100) + '%';
+
+  document.getElementById('qualCount').textContent = s.qualCount;
+  document.getElementById('scoreValue').textContent = s.total.toFixed(1).replace('.',',');
+
+  var v = verdict(s.total);
+  var hero = document.getElementById('scoreHero');
+  hero.className = 'score-hero zone-' + v.zone;
+  document.getElementById('scoreVerdict').textContent = v.text;
+
+  // Если ни одно поле не заполнено — отдельное сообщение
+  var anyFilled = ['pe','pb','ps','roe','roa','de','div','revGrowth','profitGrowth'].some(function(m){ return snap[m] !== null; }) || s.qualCount > 0;
+  if (!anyFilled) {
+    hero.className = 'score-hero';
+    document.getElementById('scoreVerdict').textContent = 'Заполните данные на вкладке «Калькулятор»';
+    document.getElementById('scoreTagline').textContent = 'Чем больше полей заполнено — тем точнее оценка.';
+  } else {
+    document.getElementById('scoreTagline').textContent = v.tag;
+  }
+}
+
+// ==================== ТАБЫ ====================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+  var tabs = document.querySelectorAll('.tab');
+  var idx = name === 'calc' ? 0 : (name === 'score' ? 1 : 2);
+  tabs[idx].classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'score') renderScore();
+}
+
+// ==================== ПОДСКАЗКИ ====================
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.hint-btn');
+  if (btn) {
+    var key = btn.dataset.hint;
+    var html = HINTS[key] || 'Подсказка скоро появится.';
+    document.getElementById('hintText').innerHTML = html;
+    document.getElementById('hintPopup').classList.add('show');
+  }
+  if (e.target.id === 'hintCloseBtn' || e.target.id === 'hintPopup') {
+    document.getElementById('hintPopup').classList.remove('show');
+  }
+});
+
+// ==================== QUAL CHECKBOXES ====================
+document.querySelectorAll('.qual-item').forEach(function(el){
+  var input = el.querySelector('input');
+  input.addEventListener('change', function(){
+    el.classList.toggle('checked', input.checked);
+    renderScore();
+  });
+});
+
+// ==================== АВТОПЕРЕСЧЁТ ====================
+['pe','pb','ps','roe','roa','de','div','revGrowth','profitGrowth'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderScore);
+});
+var bankCheckbox = document.getElementById('bankMode');
+if (bankCheckbox) {
+  bankCheckbox.addEventListener('change', function(){
+    var wrap = document.getElementById('bankModeWrap');
+    if (wrap) wrap.classList.toggle('checked', bankCheckbox.checked);
+    renderScore();
+  });
+}
+
+// ==================== MOEX ISS API ====================
+const MOEX_BASE = 'https://iss.moex.com/iss';
+var currentTicker = '';
+var currentName = '';
+var currentSector = '';
+
+async function moexFetch(url) {
+  var resp = await fetch(url);
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  return resp.json();
+}
+
+async function searchMoex(query) {
+  var status = document.getElementById('moexStatus');
+  var results = document.getElementById('moexResults');
+  var btn = document.getElementById('moexSearchBtn');
+
+  if (!query || query.trim().length < 2) {
+    status.textContent = 'Введите минимум 2 символа';
+    status.className = 'moex-status error';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Ищу...';
+  status.textContent = ''; status.className = 'moex-status'; results.innerHTML = '';
+
+  try {
+    var url = MOEX_BASE + '/securities.json?q=' + encodeURIComponent(query.trim()) + '&limit=100&iss.meta=off&group_by_filter=stock_shares';
+    var data = await moexFetch(url);
+    var cols = data.securities.columns;
+    var rows = data.securities.data;
+
+    if (!rows || rows.length === 0) {
+      status.textContent = 'Ничего не найдено. Попробуйте другое название или тикер.';
+      status.className = 'moex-status error';
+      btn.disabled = false; btn.textContent = 'Найти';
+      return;
+    }
+
+    var allItems = rows.map(function(r){
+      var d = {}; cols.forEach(function(c, i){ d[c] = r[i]; }); return d;
+    });
+
+    // Только акции (на всякий случай — group_by_filter уже фильтрует)
+    var shares = allItems.filter(function(d){
+      return d.group === 'stock_shares' || (d.type && (d.type.indexOf('share') >= 0 || d.type.indexOf('common') >= 0 || d.type.indexOf('preferred') >= 0));
+    });
+    var toShow = shares.length > 0 ? shares : allItems;
+    renderMoexResults(toShow);
+    status.textContent = 'Найдено акций: ' + toShow.length + (toShow.length >= 100 ? ' (уточните запрос)' : '');
+    status.className = 'moex-status success';
+  } catch (err) {
+    status.textContent = 'Не удалось подключиться. Проверьте интернет или введите тикер вручную.';
+    status.className = 'moex-status error';
+    console.error('MOEX search error:', err);
+  }
+  btn.disabled = false; btn.textContent = 'Найти';
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function renderMoexResults(items) {
+  var results = document.getElementById('moexResults');
+  var INITIAL_SHOW = 12;
+  var showAll = items.length <= INITIAL_SHOW;
+  var toRender = showAll ? items : items.slice(0, INITIAL_SHOW);
+
+  function itemHtml(b) {
+    var secid = escHtml(b.secid || '');
+    var shortname = escHtml(b.shortname || b.name || 'Без названия');
+    var fullname = escHtml(b.name || '');
+    var isin = b.isin ? ' · ISIN: ' + escHtml(b.isin) : '';
+    return '<div class="moex-item" onclick="loadStockFromMoex(\'' + secid + '\')">' +
+      '<span class="moex-item-name">' + shortname + '</span>' +
+      '<span class="moex-item-ticker">' + secid + '</span>' +
+      '<div class="moex-item-details">' + fullname + isin + '</div>' +
+    '</div>';
+  }
+
+  results.innerHTML = toRender.map(itemHtml).join('');
+
+  if (!showAll) {
+    var remaining = items.length - INITIAL_SHOW;
+    results.innerHTML += '<button class="moex-show-all-btn" id="moexShowAllBtn">Показать ещё ' + remaining + '</button>';
+    document.getElementById('moexShowAllBtn').addEventListener('click', function(){
+      results.innerHTML = items.map(itemHtml).join('');
+    });
+  }
+}
+
+async function loadStockFromMoex(ticker) {
+  var status = document.getElementById('moexStatus');
+  status.textContent = 'Загружаю данные ' + ticker + '...';
+  status.className = 'moex-status';
+  document.getElementById('moexResults').innerHTML = '';
+  document.getElementById('moexSearch').value = ticker;
+
+  try {
+    // Основные данные акции с маркетдатой
+    var url = MOEX_BASE + '/engines/stock/markets/shares/securities/' + encodeURIComponent(ticker) + '.json?iss.meta=off';
+    var data = await moexFetch(url);
+
+    var sec = parseTable(data.securities);
+    var md = parseTable(data.marketdata);
+    var info = sec[0] || {};
+    var price = (md[0] && (md[0].LAST || md[0].MARKETPRICE || md[0].LCURRENTPRICE)) || null;
+    var lotsize = info.LOTSIZE || 1;
+    var issueSize = info.ISSUESIZE || null;
+    var shortName = info.SHORTNAME || info.SECNAME || ticker;
+    var fullName = info.SECNAME || info.LATNAME || shortName;
+
+    currentTicker = ticker;
+    currentName = shortName;
+
+    // Капитализация = цена × количество акций
+    var marketCap = (price && issueSize) ? (price * issueSize) : null;
+
+    // Сектор пробуем достать из эмитента
+    currentSector = '—';
+    try {
+      var infoUrl = MOEX_BASE + '/securities/' + encodeURIComponent(ticker) + '.json?iss.meta=off';
+      var infoData = await moexFetch(infoUrl);
+      var description = parseTable(infoData.description);
+      var sectorRow = description.find(function(r){ return r.name === 'TYPENAME' || r.name === 'TYPE'; });
+      if (sectorRow) currentSector = sectorRow.value;
+      var sectorRow2 = description.find(function(r){ return r.name === 'SECTOR' || r.name === 'GROUPNAME'; });
+      if (sectorRow2) currentSector = sectorRow2.value;
+    } catch(e) { /* ignore */ }
+
+    // Заполняем UI карточку
+    document.getElementById('tickerInfo').style.display = 'block';
+    document.getElementById('tiName').textContent = shortName;
+    document.getElementById('tiTicker').textContent = ticker;
+    document.getElementById('tiPrice').textContent = price ? (Number(price).toFixed(2).replace('.',',') + ' ₽') : '—';
+    document.getElementById('tiCap').textContent = marketCap ? formatBigNumber(marketCap) : '—';
+    document.getElementById('tiSector').textContent = currentSector;
+
+    status.textContent = 'Данные ' + ticker + ' загружены. Заполни мультипликаторы вручную или дождись подключения автоподтяжки.';
+    status.className = 'moex-status success';
+    renderScore();
+  } catch (err) {
+    status.textContent = 'Не удалось загрузить данные ' + ticker + '. Попробуйте ещё раз.';
+    status.className = 'moex-status error';
+    console.error('MOEX load error:', err);
+  }
+}
+
+function parseTable(table) {
+  if (!table || !table.columns || !table.data) return [];
+  var cols = table.columns;
+  return table.data.map(function(row){
+    var obj = {}; cols.forEach(function(c, i){ obj[c] = row[i]; }); return obj;
+  });
+}
+
+function formatBigNumber(n) {
+  if (n >= 1e12) return (n / 1e12).toFixed(2).replace('.',',') + ' трлн ₽';
+  if (n >= 1e9)  return (n / 1e9).toFixed(2).replace('.',',') + ' млрд ₽';
+  if (n >= 1e6)  return (n / 1e6).toFixed(2).replace('.',',') + ' млн ₽';
+  return n.toFixed(0) + ' ₽';
+}
+
+// Поиск
+document.getElementById('moexSearchBtn').addEventListener('click', function(){
+  searchMoex(document.getElementById('moexSearch').value);
+});
+document.getElementById('moexSearch').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') { e.preventDefault(); searchMoex(this.value); }
+});
+
+// ==================== СРАВНЕНИЕ ====================
+var compareList = [];
+
+function addToCompare() {
+  if (!currentTicker) {
+    alert('Сначала найди акцию через поиск на вкладке «Калькулятор».');
+    return;
+  }
+  var snap = getCurrentSnapshot();
+  var s = calcScore(snap);
+  compareList.push({ snap: snap, score: s });
+  renderCompare();
+  switchTab('compare');
+}
+
+function removeFromCompare(idx) {
+  compareList.splice(idx, 1);
+  renderCompare();
+}
+
+function renderCompare() {
+  var box = document.getElementById('compareList');
+  if (compareList.length === 0) {
+    box.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px 20px;font-size:13px;">Пока пусто. Зайди на вкладку «Калькулятор», заполни данные акции и нажми «+ Добавить текущую».</div>';
+    return;
+  }
+
+  // сортируем по убыванию баллов
+  var sorted = compareList.map(function(c, i){ return { c: c, i: i }; })
+    .sort(function(a, b){ return b.c.score.total - a.c.score.total; });
+
+  box.innerHTML = sorted.map(function(item){
+    var c = item.c, idx = item.i;
+    var v = verdict(c.score.total);
+    var name = escHtml(c.snap.name || c.snap.ticker || 'Акция');
+    var ticker = escHtml(c.snap.ticker || '');
+    return '<div class="compare-card">' +
+      '<div class="compare-card-header">' +
+        '<div><span style="font-size:15px;font-weight:800;color:var(--black)">' + name + '</span> <span style="color:var(--green);font-weight:700;font-size:12px;margin-left:6px">' + ticker + '</span></div>' +
+        '<button class="btn-remove" onclick="removeFromCompare(' + idx + ')" title="Удалить">×</button>' +
+      '</div>' +
+      '<div class="compare-stat-row">' +
+        chip('P/E', c.snap.pe) +
+        chip('P/B', c.snap.pb) +
+        chip('ROE', c.snap.roe, '%') +
+        chip('Долг/Кап', c.snap.de) +
+        chip('Дивы', c.snap.div, '%') +
+      '</div>' +
+      '<div class="compare-score-row">' +
+        '<div>' +
+          '<div class="compare-score-label">Балл</div>' +
+          '<div class="compare-score-value">' + c.score.total.toFixed(1).replace('.',',') + '<span style="font-size:14px;color:var(--muted);font-weight:600">/10</span></div>' +
+        '</div>' +
+        '<span class="compare-verdict-pill zone-' + v.zone + '">' + v.text + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function chip(label, val, suffix) {
+  if (val === null || val === undefined || isNaN(val)) return '';
+  return '<span class="compare-chip">' + label + ': <b>' + fmtNum(val, suffix) + '</b></span>';
+}
+
+// ==================== EXCEL EXPORT ====================
+function exportToExcel() {
+  var snap = getCurrentSnapshot();
+  var s = calcScore(snap);
+  var v = verdict(s.total);
+
+  var rows = [
+    ['Калькулятор акций — Академия «Инвестиции просто»'],
+    [''],
+    ['Тикер', snap.ticker || ''],
+    ['Название', snap.name || ''],
+    ['Тип', snap.isBank ? 'Банк / финансовая компания' : 'Нефинансовая компания'],
+    [''],
+    ['МУЛЬТИПЛИКАТОРЫ', '', 'Зона'],
+    ['P/E', snap.pe, zoneLabel(s.zones.pe)],
+    ['P/B', snap.pb, zoneLabel(s.zones.pb)],
+    ['P/S', snap.ps, zoneLabel(s.zones.ps)],
+    [''],
+    ['ФИНАНСОВОЕ ЗДОРОВЬЕ', '', 'Зона'],
+    ['ROE, %', snap.roe, zoneLabel(s.zones.roe)],
+    ['ROA, %', snap.roa, zoneLabel(s.zones.roa)],
+    ['Debt/Equity', snap.isBank ? 'не учитывается (банк)' : snap.de, snap.isBank ? '' : zoneLabel(s.zones.de)],
+    [''],
+    ['РОСТ И ДИВИДЕНДЫ', '', 'Зона'],
+    ['Дивдоходность, %', snap.div, zoneLabel(s.zones.div)],
+    ['Рост выручки YoY, %', snap.revGrowth, zoneLabel(s.zones.revGrowth)],
+    ['Рост прибыли YoY, %', snap.profitGrowth, zoneLabel(s.zones.profitGrowth)],
+    [''],
+    ['КАЧЕСТВЕННЫЕ ФАКТОРЫ', '', ''],
+    ['Сектор устойчив', snap.qual.sector ? 'Да' : 'Нет'],
+    ['Понятная стратегия', snap.qual.strategy ? 'Да' : 'Нет'],
+    ['Корпуправление в порядке', snap.qual.governance ? 'Да' : 'Нет'],
+    ['Есть дивидендная политика', snap.qual.divPolicy ? 'Да' : 'Нет'],
+    ['Чистая история', snap.qual.cleanHistory ? 'Да' : 'Нет'],
+    [''],
+    ['ИТОГ', '', ''],
+    ['Блок 1: Мультипликаторы', s.block1.toFixed(2), 'из 2.5'],
+    ['Блок 2: Финздоровье', s.block2.toFixed(2), 'из 2.5'],
+    ['Блок 3: Рост и дивы', s.block3.toFixed(2), 'из 2.5'],
+    ['Блок 4: Качественные', s.block4.toFixed(2), 'из 2.5'],
+    ['Итоговый балл', s.total.toFixed(2), 'из 10'],
+    ['Вердикт', v.text]
+  ];
+
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 32 }, { wch: 18 }, { wch: 14 }];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Анализ');
+
+  var fname = 'stock_' + (snap.ticker || 'analysis') + '_' + new Date().toISOString().slice(0,10) + '.xlsx';
+  XLSX.writeFile(wb, fname);
+}
+
+function zoneLabel(z) {
+  if (z === 'green') return 'Зелёный';
+  if (z === 'yellow') return 'Жёлтый';
+  if (z === 'red') return 'Красный';
+  return '—';
+}
+
+// первоначальная отрисовка
+renderScore();
+renderCompare();
+</script>
+
+</body>
+</html>
