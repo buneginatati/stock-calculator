@@ -1,0 +1,1421 @@
+{
+  "source": "dohod.ru/ik/analytics/dividend",
+  "updated": "2026-05-08",
+  "data": {
+    "SFIN": {
+      "name": "ЭсЭфАй (Сафмар)",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 206.2,
+      "ttm_yield": 20.24,
+      "price": 1018.8,
+      "cap_mln_rub": 49536.49,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 172.0,
+        "yield": 16.88,
+        "ex_date": "15.05.2026"
+      }
+    },
+    "X5": {
+      "name": "КЦ ИКС 5",
+      "sector": "Розничная торговля",
+      "ttm_amount": 439.0,
+      "ttm_yield": 18.88,
+      "price": 2325.0,
+      "cap_mln_rub": 631406.93,
+      "dsi": 0.21,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 267.0,
+        "yield": 11.48,
+        "ex_date": "09.07.2026"
+      }
+    },
+    "ZAYM": {
+      "name": "Займер",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 25.64,
+      "ttm_yield": 18.44,
+      "price": 139.0,
+      "cap_mln_rub": 13900.0,
+      "dsi": 0.25
+    },
+    "FIXR": {
+      "name": "Fix Price",
+      "sector": "Розничная торговля",
+      "ttm_amount": 0.11,
+      "ttm_yield": 16.41,
+      "price": 0.6702,
+      "cap_mln_rub": 67020.0,
+      "dsi": 0.07,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.11,
+        "yield": 16.41,
+        "ex_date": "19.05.2026"
+      }
+    },
+    "MTSS": {
+      "name": "МТС",
+      "sector": "Телекомы",
+      "ttm_amount": 35.0,
+      "ttm_yield": 16.04,
+      "price": 218.2,
+      "cap_mln_rub": 484531.27,
+      "dsi": 0.71,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 35.0,
+        "yield": 16.04,
+        "ex_date": "07.07.2026"
+      }
+    },
+    "HEAD": {
+      "name": "Хэдхантер",
+      "sector": "ПО и IT",
+      "ttm_amount": 444.75,
+      "ttm_yield": 15.3,
+      "price": 2906.0,
+      "cap_mln_rub": 137119.37,
+      "dsi": 0.36
+    },
+    "DIAS": {
+      "name": "Диасофт",
+      "sector": "ПО и IT",
+      "ttm_amount": 203.0,
+      "ttm_yield": 14.7,
+      "price": 1381.0,
+      "cap_mln_rub": 14500.5,
+      "dsi": 0.21,
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 104.0,
+        "yield": 7.53,
+        "ex_date": "23.03.2027"
+      }
+    },
+    "BSPB": {
+      "name": "Банк Санкт-Петербург (БСП)",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 49.54,
+      "ttm_yield": 14.61,
+      "price": 339.17,
+      "cap_mln_rub": 152052.6,
+      "dsi": 0.75,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 26.23,
+        "yield": 7.73,
+        "ex_date": "12.05.2026"
+      }
+    },
+    "TRNFP": {
+      "name": "Транснефть-п",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 201.38,
+      "ttm_yield": 14.59,
+      "price": 1380.2,
+      "cap_mln_rub": 214603.85,
+      "dsi": 0.79,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 201.38,
+        "yield": 14.59,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "BTBR": {
+      "name": "В2В-РТС",
+      "sector": "ПО и IT",
+      "ttm_amount": 18.58,
+      "ttm_yield": 14.24,
+      "price": 130.48,
+      "cap_mln_rub": 23094.97,
+      "dsi": 0.0
+    },
+    "LKOH": {
+      "name": "ЛУКОЙЛ",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 657.18,
+      "ttm_yield": 12.94,
+      "price": 5080.0,
+      "cap_mln_rub": 3519758.07,
+      "dsi": 0.96,
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 347.68,
+        "yield": 6.84,
+        "ex_date": "04.05.2027"
+      }
+    },
+    "RENI": {
+      "name": "Ренессанс Страхование",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 10.9,
+      "ttm_yield": 12.91,
+      "price": 84.44,
+      "cap_mln_rub": 47029.09,
+      "dsi": 0.21,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 6.4,
+        "yield": 7.58,
+        "ex_date": "15.07.2026"
+      }
+    },
+    "NMTP": {
+      "name": "НМТП",
+      "sector": "Логистика",
+      "ttm_amount": 1.06,
+      "ttm_yield": 12.71,
+      "price": 8.34,
+      "cap_mln_rub": 160626.86,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 1.06,
+        "yield": 12.71,
+        "ex_date": "14.07.2026"
+      }
+    },
+    "LSRG": {
+      "name": "ЛСР",
+      "sector": "Строительство",
+      "ttm_amount": 78.0,
+      "ttm_yield": 12.54,
+      "price": 621.8,
+      "cap_mln_rub": 64064.19,
+      "dsi": 0.2,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 78.0,
+        "yield": 12.54,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "MRKC": {
+      "name": "Россети Центр (МРСК Центра)",
+      "sector": "Энергетика",
+      "ttm_amount": 0.1036,
+      "ttm_yield": 12.24,
+      "price": 0.8468,
+      "cap_mln_rub": 105803.12,
+      "dsi": 0.43,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.1036,
+        "yield": 12.24,
+        "ex_date": "25.06.2026"
+      }
+    },
+    "MRKP": {
+      "name": "Россети Центр и Приволжье (МРСК ЦП)",
+      "sector": "Энергетика",
+      "ttm_amount": 0.0719,
+      "ttm_yield": 11.57,
+      "price": 0.6216,
+      "cap_mln_rub": 70052.96,
+      "dsi": 0.43,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0719,
+        "yield": 11.57,
+        "ex_date": "01.07.2026"
+      }
+    },
+    "AVAN": {
+      "name": "АКБ \"Авангард\"",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 73.81,
+      "ttm_yield": 11.32,
+      "price": 652.0,
+      "cap_mln_rub": 52616.4,
+      "dsi": 0.5
+    },
+    "GCHE": {
+      "name": "Черкизово",
+      "sector": "Продовольствие",
+      "ttm_amount": 387.63,
+      "ttm_yield": 11.31,
+      "price": 3427.0,
+      "cap_mln_rub": 144694.94,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 226.48,
+        "yield": 6.61,
+        "ex_date": "07.04.2027"
+      }
+    },
+    "TATNP": {
+      "name": "Татнефть-п",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 58.51,
+      "ttm_yield": 10.99,
+      "price": 532.2,
+      "cap_mln_rub": 1295738.52,
+      "dsi": 0.5
+    },
+    "TATN": {
+      "name": "Татнефть-ао",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 58.51,
+      "ttm_yield": 10.47,
+      "price": 558.7,
+      "cap_mln_rub": 1295738.52,
+      "dsi": 0.5
+    },
+    "HNFG": {
+      "name": "HENDERSON",
+      "sector": "Розничная торговля",
+      "ttm_amount": 41.0,
+      "ttm_yield": 10.44,
+      "price": 392.8,
+      "cap_mln_rub": 15886.58,
+      "dsi": 0.21
+    },
+    "MSNG": {
+      "name": "Мосэнерго",
+      "sector": "Энергетика",
+      "ttm_amount": 0.1952,
+      "ttm_yield": 10.22,
+      "price": 1.91,
+      "cap_mln_rub": 75921.28,
+      "dsi": 0.2,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.1952,
+        "yield": 10.22,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "AQUA": {
+      "name": "Инарктика (РусАква)",
+      "sector": "Продовольствие",
+      "ttm_amount": 40.0,
+      "ttm_yield": 9.84,
+      "price": 406.3,
+      "cap_mln_rub": 35704.28,
+      "dsi": 0.64
+    },
+    "SIBN": {
+      "name": "Газпром нефть",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 45.14,
+      "ttm_yield": 8.94,
+      "price": 504.95,
+      "cap_mln_rub": 2394119.25,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 22.66,
+        "yield": 4.49,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "LEAS": {
+      "name": "Европлан",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 58.0,
+      "ttm_yield": 8.93,
+      "price": 649.2,
+      "cap_mln_rub": 77904.0,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "08.06.2026"
+      }
+    },
+    "MGNT": {
+      "name": "Магнит",
+      "sector": "Розничная торговля",
+      "ttm_amount": 224.26,
+      "ttm_yield": 8.89,
+      "price": 2522.0,
+      "cap_mln_rub": 257020.44,
+      "dsi": 0.03,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 224.26,
+        "yield": 8.89,
+        "ex_date": "15.07.2026"
+      }
+    },
+    "ROSN": {
+      "name": "Роснефть",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 36.1,
+      "ttm_yield": 8.85,
+      "price": 408.1,
+      "cap_mln_rub": 4325116.37,
+      "dsi": 0.57,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 4.6,
+        "yield": 1.13,
+        "ex_date": "20.07.2026"
+      }
+    },
+    "SELG": {
+      "name": "Селигдар ао",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 4.0,
+      "ttm_yield": 8.47,
+      "price": 47.25,
+      "cap_mln_rub": 48667.5,
+      "dsi": 0.2,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.0,
+        "yield": 4.23,
+        "ex_date": "15.06.2026"
+      }
+    },
+    "PLZL": {
+      "name": "Полюс",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 179.57,
+      "ttm_yield": 8.22,
+      "price": 2184.2,
+      "cap_mln_rub": 2972027.84,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 56.8,
+        "yield": 2.6,
+        "ex_date": "18.05.2026"
+      }
+    },
+    "CNRU": {
+      "name": "ЦИАН",
+      "sector": "Разное",
+      "ttm_amount": 50.0,
+      "ttm_yield": 8.16,
+      "price": 612.4,
+      "cap_mln_rub": 47565.41,
+      "dsi": 0.14,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 50.0,
+        "yield": 8.16,
+        "ex_date": "03.06.2026"
+      }
+    },
+    "NVTK": {
+      "name": "НОВАТЭК",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 85.9,
+      "ttm_yield": 7.55,
+      "price": 1138.1,
+      "cap_mln_rub": 3455619.86,
+      "dsi": 0.75
+    },
+    "MDMG": {
+      "name": "Мать и дитя",
+      "sector": "Разное",
+      "ttm_amount": 94.0,
+      "ttm_yield": 7.27,
+      "price": 1293.7,
+      "cap_mln_rub": 97189.23,
+      "dsi": 0.14,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 46.0,
+        "yield": 3.56,
+        "ex_date": "19.06.2026"
+      }
+    },
+    "GMKN": {
+      "name": "Норильский никель",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 8.66,
+      "ttm_yield": 6.74,
+      "price": 128.56,
+      "cap_mln_rub": 1965211.83,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 8.66,
+        "yield": 6.74,
+        "ex_date": "15.06.2026"
+      }
+    },
+    "DATA": {
+      "name": "Arenadata",
+      "sector": "ПО и IT",
+      "ttm_amount": 6.43,
+      "ttm_yield": 6.72,
+      "price": 95.66,
+      "cap_mln_rub": 20855.91,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.71,
+        "yield": 0.74,
+        "ex_date": "10.06.2026"
+      }
+    },
+    "PHOR": {
+      "name": "Фосагро",
+      "sector": "Химия",
+      "ttm_amount": 432.38,
+      "ttm_yield": 6.41,
+      "price": 6743.0,
+      "cap_mln_rub": 873218.5,
+      "dsi": 0.5
+    },
+    "YDEX": {
+      "name": "Яндекс",
+      "sector": "ПО и IT",
+      "ttm_amount": 240.0,
+      "ttm_yield": 5.93,
+      "price": 4048.0,
+      "cap_mln_rub": 1598830.12,
+      "dsi": 0.36
+    },
+    "BELU": {
+      "name": "НоваБев Групп (Белуга Групп)",
+      "sector": "Продовольствие",
+      "ttm_amount": 20.0,
+      "ttm_yield": 5.62,
+      "price": 356.0,
+      "cap_mln_rub": 44998.4,
+      "dsi": 0.71,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 10.0,
+        "yield": 2.81,
+        "ex_date": "09.06.2026"
+      }
+    },
+    "NKHP": {
+      "name": "НКХП",
+      "sector": "Логистика",
+      "ttm_amount": 23.87,
+      "ttm_yield": 5.02,
+      "price": 475.0,
+      "cap_mln_rub": 32108.58,
+      "dsi": 0.29,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 9.09,
+        "yield": 1.91,
+        "ex_date": "30.06.2026"
+      }
+    },
+    "SVCB": {
+      "name": "Совкомбанк",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 0.59,
+      "ttm_yield": 4.89,
+      "price": 12.06,
+      "cap_mln_rub": 271658.3,
+      "dsi": 0.14,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.59,
+        "yield": 4.89,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "NKNCP": {
+      "name": "НКНХ-п",
+      "sector": "Химия",
+      "ttm_amount": 2.2,
+      "ttm_yield": 4.39,
+      "price": 50.14,
+      "cap_mln_rub": 124170.58,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.2,
+        "yield": 4.39,
+        "ex_date": "01.07.2026"
+      }
+    },
+    "KZOS": {
+      "name": "КазаньОргСинтез-ао",
+      "sector": "Химия",
+      "ttm_amount": 2.45,
+      "ttm_yield": 4.26,
+      "price": 57.5,
+      "cap_mln_rub": 104375.81,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.45,
+        "yield": 4.26,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "AKRN": {
+      "name": "Акрон",
+      "sector": "Химия",
+      "ttm_amount": 753.0,
+      "ttm_yield": 3.8,
+      "price": 19812.0,
+      "cap_mln_rub": 728232.77,
+      "dsi": 0.36,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 492.0,
+        "yield": 2.48,
+        "ex_date": "09.06.2026"
+      }
+    },
+    "OZPH": {
+      "name": "Озон Фармацевтика",
+      "sector": "Разное",
+      "ttm_amount": 1.53,
+      "ttm_yield": 3.2,
+      "price": 47.74,
+      "cap_mln_rub": 55745.55,
+      "dsi": 0.36
+    },
+    "NKNC": {
+      "name": "НКНХ-ао",
+      "sector": "Химия",
+      "ttm_amount": 2.2,
+      "ttm_yield": 3.13,
+      "price": 70.25,
+      "cap_mln_rub": 124170.58,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.2,
+        "yield": 3.13,
+        "ex_date": "01.07.2026"
+      }
+    },
+    "RTKM": {
+      "name": "Ростелеком-ао",
+      "sector": "Телекомы",
+      "ttm_amount": 1.62,
+      "ttm_yield": 3.08,
+      "price": 52.71,
+      "cap_mln_rub": 184709.12,
+      "dsi": 0.5,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 1.62,
+        "yield": 3.08,
+        "ex_date": "13.08.2026"
+      }
+    },
+    "RTKMP": {
+      "name": "Ростелеком-п",
+      "sector": "Телекомы",
+      "ttm_amount": 1.62,
+      "ttm_yield": 2.92,
+      "price": 55.65,
+      "cap_mln_rub": 184709.12,
+      "dsi": 0.71,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 1.62,
+        "yield": 2.92,
+        "ex_date": "13.08.2026"
+      }
+    },
+    "POSI": {
+      "name": "Группа Позитив",
+      "sector": "ПО и IT",
+      "ttm_amount": 28.08,
+      "ttm_yield": 2.83,
+      "price": 990.6,
+      "cap_mln_rub": 70544.59,
+      "dsi": 0.21,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "25.05.2026"
+      }
+    },
+    "KAZT": {
+      "name": "Куйбышевазот",
+      "sector": "Химия",
+      "ttm_amount": 8.0,
+      "ttm_yield": 1.96,
+      "price": 409.0,
+      "cap_mln_rub": 73536.22,
+      "dsi": 0.36,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "26.05.2026"
+      }
+    },
+    "KAZTP": {
+      "name": "Куйбышевазот-п",
+      "sector": "Химия",
+      "ttm_amount": 8.0,
+      "ttm_yield": 1.95,
+      "price": 410.0,
+      "cap_mln_rub": 73536.22,
+      "dsi": 0.36,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "26.05.2026"
+      }
+    },
+    "KZOSP": {
+      "name": "КазаньОргсинтез-п",
+      "sector": "Химия",
+      "ttm_amount": 0.25,
+      "ttm_yield": 1.73,
+      "price": 14.48,
+      "cap_mln_rub": 104375.81,
+      "dsi": 0.61,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.25,
+        "yield": 1.73,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "ASTR": {
+      "name": "Группа Астра",
+      "sector": "ПО и IT",
+      "ttm_amount": 4.68,
+      "ttm_yield": 1.68,
+      "price": 278.2,
+      "cap_mln_rub": 58422.0,
+      "dsi": 0.21,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 4.68,
+        "yield": 1.68,
+        "ex_date": "01.06.2026"
+      }
+    },
+    "BSPBP": {
+      "name": "Банк Санкт-Петербург-ап",
+      "sector": "Финансы и Банки",
+      "ttm_amount": 0.44,
+      "ttm_yield": 0.89,
+      "price": 49.6,
+      "cap_mln_rub": 152052.6,
+      "dsi": 0.68,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.22,
+        "yield": 0.44,
+        "ex_date": "12.05.2026"
+      }
+    },
+    "RAGR": {
+      "name": "Русагро",
+      "sector": "Продовольствие",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 105.2,
+      "cap_mln_rub": 100860.46,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "18.07.2026"
+      }
+    },
+    "AFKS": {
+      "name": "АФК Система",
+      "sector": "Разное",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 10.96,
+      "cap_mln_rub": 105783.3,
+      "dsi": 0.03,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "FLOT": {
+      "name": "Совкомфлот",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 79.04,
+      "cap_mln_rub": 187719.52,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "18.07.2026"
+      }
+    },
+    "ALRS": {
+      "name": "Алроса",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 28.53,
+      "cap_mln_rub": 210122.47,
+      "dsi": 0.0
+    },
+    "HIMCP": {
+      "name": "Химпром-п",
+      "sector": "Химия",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 18.42,
+      "cap_mln_rub": 4229.81,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "11.07.2026"
+      }
+    },
+    "RASP": {
+      "name": "Распадская",
+      "sector": "Уголь",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 129.0,
+      "cap_mln_rub": 85879.68,
+      "dsi": 0.0
+    },
+    "OKEY": {
+      "name": "ОКЕЙ",
+      "sector": "Розничная торговля",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 44.57,
+      "cap_mln_rub": 4577.73,
+      "dsi": null,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "22.06.2026"
+      }
+    },
+    "FEES": {
+      "name": "ФСК Россети",
+      "sector": "Энергетика",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 0.0662,
+      "cap_mln_rub": 139953.33,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "30.05.2026"
+      }
+    },
+    "MRKZ": {
+      "name": "Россети Северо-Запад (МРСК СЗ)",
+      "sector": "Энергетика",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 0.1343,
+      "cap_mln_rub": 12864.05,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "09.06.2026"
+      }
+    },
+    "MRKS": {
+      "name": "Россети Сибирь (МРСК Сибири)",
+      "sector": "Энергетика",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 0.506,
+      "cap_mln_rub": 47976.47,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "24.08.2026"
+      }
+    },
+    "ENPG": {
+      "name": "En Plus",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 400.7,
+      "cap_mln_rub": 255986.75,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "05.05.2027"
+      }
+    },
+    "SMLT": {
+      "name": "ГК Самолет",
+      "sector": "Строительство",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 577.0,
+      "cap_mln_rub": 35531.29,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "DELI": {
+      "name": "Делимобиль",
+      "sector": "Транспорт",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 76.75,
+      "cap_mln_rub": 13496.42,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "19.06.2026"
+      }
+    },
+    "SGZH": {
+      "name": "Сегежа",
+      "sector": "Разное",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 0.8715,
+      "cap_mln_rub": 68369.18,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "02.06.2026"
+      }
+    },
+    "EUTR": {
+      "name": "Евротранс",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 78.45,
+      "cap_mln_rub": 12485.21,
+      "dsi": 0.43
+    },
+    "MVID": {
+      "name": "М.Видео",
+      "sector": "Розничная торговля",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 60.0,
+      "cap_mln_rub": 10786.09,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "28.04.2027"
+      }
+    },
+    "CHMF": {
+      "name": "Северсталь",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 738.0,
+      "cap_mln_rub": 618236.37,
+      "dsi": 0.0
+    },
+    "LVHK": {
+      "name": "Левенгук",
+      "sector": "Разное",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 24.05,
+      "cap_mln_rub": 1273.21,
+      "dsi": 0.2,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "29.06.2026"
+      }
+    },
+    "TRMK": {
+      "name": "ТМК",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 87.62,
+      "cap_mln_rub": 92176.24,
+      "dsi": 0.2,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "04.06.2026"
+      }
+    },
+    "GEMC": {
+      "name": "МКПАО ЮМГ (ЕМС)",
+      "sector": "Разное",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 806.3,
+      "cap_mln_rub": 72567.0,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "27.06.2026"
+      }
+    },
+    "NLMK": {
+      "name": "НЛМК",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 84.74,
+      "cap_mln_rub": 507866.08,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "23.06.2026"
+      }
+    },
+    "PIKK": {
+      "name": "ПИК",
+      "sector": "Строительство",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 536.6,
+      "cap_mln_rub": 354422.87,
+      "dsi": 0.0,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "03.06.2026"
+      }
+    },
+    "MAGN": {
+      "name": "ММК",
+      "sector": "Металлы и добыча",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 24.67,
+      "cap_mln_rub": 275670.72,
+      "dsi": 0.0
+    },
+    "TGKN": {
+      "name": "ТГК-14",
+      "sector": "Энергетика",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 0.00528,
+      "cap_mln_rub": 7169.95,
+      "dsi": 0.15,
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "26.05.2026"
+      }
+    },
+    "GAZP": {
+      "name": "Газпром",
+      "sector": "Нефть/Газ",
+      "ttm_amount": 0.0,
+      "ttm_yield": 0.0,
+      "price": 118.0,
+      "cap_mln_rub": 5187593.77,
+      "dsi": 0.0
+    },
+    "VTBR": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 13.59,
+        "yield": 14.82,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "AFLT": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 6.58,
+        "yield": 13.74,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "SBER": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 37.64,
+        "yield": 11.79,
+        "ex_date": "20.07.2026"
+      }
+    },
+    "SBERP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 37.64,
+        "yield": 11.79,
+        "ex_date": "20.07.2026"
+      }
+    },
+    "MOEX": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 19.57,
+        "yield": 11.67,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "DOMRF": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 246.88,
+        "yield": 11.1,
+        "ex_date": "13.07.2026"
+      }
+    },
+    "MRKV": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.021,
+        "yield": 10.95,
+        "ex_date": "09.07.2026"
+      }
+    },
+    "KRSB": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.41,
+        "yield": 10.76,
+        "ex_date": "18.06.2026"
+      }
+    },
+    "KRSBP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 2.42,
+        "yield": 10.76,
+        "ex_date": "18.06.2026"
+      }
+    },
+    "MRKU": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0639,
+        "yield": 10.62,
+        "ex_date": "07.07.2026"
+      }
+    },
+    "LSNGP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 36.72,
+        "yield": 10.35,
+        "ex_date": "03.07.2026"
+      }
+    },
+    "IRAO": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.3214,
+        "yield": 10.29,
+        "ex_date": "09.06.2026"
+      }
+    },
+    "MSRS": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.1853,
+        "yield": 9.34,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "TTLK": {
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 0.0534,
+        "yield": 9.04,
+        "ex_date": "05.05.2027"
+      }
+    },
+    "OGKB": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0247,
+        "yield": 8.45,
+        "ex_date": "05.11.2026"
+      }
+    },
+    "MBNK": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 96.14,
+        "yield": 7.44,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "BANEP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 69.29,
+        "yield": 7.12,
+        "ex_date": "14.07.2026"
+      }
+    },
+    "SVAV": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 25.5,
+        "yield": 5.64,
+        "ex_date": "11.06.2026"
+      }
+    },
+    "KRKNP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 380.41,
+        "yield": 5.61,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "VSEH": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 4.0,
+        "yield": 5.52,
+        "ex_date": "22.06.2026"
+      }
+    },
+    "LSNG": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.8278,
+        "yield": 5.35,
+        "ex_date": "03.07.2026"
+      }
+    },
+    "BANE": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 69.29,
+        "yield": 4.91,
+        "ex_date": "14.07.2026"
+      }
+    },
+    "CNTLP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.2514,
+        "yield": 4.62,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "CNTL": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.2514,
+        "yield": 2.79,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "ABRD": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 3.57,
+        "yield": 2.46,
+        "ex_date": "07.07.2026"
+      }
+    },
+    "SNGSP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.95,
+        "yield": 2.29,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "OZON": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 70.0,
+        "yield": 1.67,
+        "ex_date": "26.05.2026"
+      }
+    },
+    "SOFL": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0184,
+        "yield": 0.03,
+        "ex_date": "10.07.2026"
+      }
+    },
+    "MGTSP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "15.05.2026"
+      }
+    },
+    "RNFT": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "11.07.2026"
+      }
+    },
+    "UGLD": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "07.07.2026"
+      }
+    },
+    "MTLR": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "MTLRP": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "HYDR": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "12.07.2026"
+      }
+    },
+    "SNGS": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "17.07.2026"
+      }
+    },
+    "TGKA": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "UPRO": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "13.05.2026"
+      }
+    },
+    "ETLN": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "08.07.2026"
+      }
+    },
+    "KMAZ": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "16.07.2026"
+      }
+    },
+    "ELMT": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "14.07.2026"
+      }
+    },
+    "ELFV": {
+      "forecast": {
+        "period": "годовые 2026",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "28.04.2027"
+      }
+    },
+    "MRKY": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "19.06.2026"
+      }
+    },
+    "LENT": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "07.07.2026"
+      }
+    },
+    "CBOM": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "07.06.2026"
+      }
+    },
+    "MGTS": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "15.05.2026"
+      }
+    },
+    "VSMO": {
+      "forecast": {
+        "period": "годовые 2025",
+        "amount": 0.0,
+        "yield": 0.0,
+        "ex_date": "09.07.2026"
+      }
+    }
+  }
+}

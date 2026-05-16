@@ -74,6 +74,8 @@
   .moex-status { font-size: 11px; color: var(--on-tile-soft); padding: 8px 0 0; font-weight: 600; }
   .moex-status.error { color: #8a2920; }
   .moex-status.success { color: #1a5638; }
+  .auto-tag { display:inline-block; margin-left:6px; font-size:9px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#fff; background:#3429D2; border-radius:6px; padding:1px 5px; vertical-align:middle; }
+  .input-field.autofilled { box-shadow: inset 3px 0 0 0 #3429D2; }
   .moex-results { margin-top: 8px; max-height: 280px; overflow-y: auto; }
   .moex-item {
     display: flex; align-items: center; gap: 10px;
@@ -317,7 +319,7 @@
     <div class="section-title" style="margin-top:24px">Финансовые показатели</div>
 
     <div class="info-box">
-      <b>Откуда брать цифры:</b> отчётность МСФО на сайте эмитента, smart-lab.ru, conomy.ru или раздел «Аналитика» в брокерском приложении. Скоро подключим автоподтяжку фундаменталки — будет считаться само.
+      <b>Автоподтяжка включена.</b> Выбери акцию из поиска — P/E, P/B, ROE, ROA, P/S и дивдоходность подставятся сами (снимок smart-lab.ru и dohod.ru). Поля с пометкой «авто» можно править. Чего в базе нет (Debt/Equity, рост выручки и прибыли) — добавь вручную из отчётности МСФО эмитента.
     </div>
 
     <div class="input-row">
@@ -882,6 +884,113 @@ if (bankCheckbox) {
   });
 }
 
+// ==================== АВТОПОДТЯЖКА ФУНДАМЕНТАЛКИ ====================
+// Снимок smart-lab.ru (мультипликаторы) и dohod.ru (дивиденды) — те же файлы,
+// что в Фундаменталке. Подключение к Supabase для этого не требуется.
+var FUND_SNAPSHOT = null, DIV_SNAPSHOT = null, snapshotPromise = null;
+
+function loadSnapshots() {
+  if (snapshotPromise) return snapshotPromise;
+  snapshotPromise = Promise.all([
+    fetch('fundamentals.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }),
+    fetch('dividends.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+  ]).then(function(res){ FUND_SNAPSHOT = res[0]; DIV_SNAPSHOT = res[1]; });
+  return snapshotPromise;
+}
+loadSnapshots(); // прогрев на старте
+
+// Ключ в снимке: точное совпадение, иначе для префа (SBERP → SBER)
+function snapKey(map, ticker) {
+  if (!map || !ticker) return null;
+  if (map[ticker]) return ticker;
+  if (/^[A-Z]+P$/.test(ticker) && map[ticker.slice(0, -1)]) return ticker.slice(0, -1);
+  return null;
+}
+
+var AUTO_LABELS = { pe:'P/E', pb:'P/B', ps:'P/S', roe:'ROE', roa:'ROA', div:'Дивдоходность' };
+
+function markAutofilled(id) {
+  var input = document.getElementById(id);
+  if (!input) return;
+  input.classList.add('autofilled');
+  var grp = input.closest('.input-group');
+  var lbl = grp && grp.querySelector('.input-label');
+  if (lbl && !lbl.querySelector('.auto-tag')) {
+    var tag = document.createElement('span');
+    tag.className = 'auto-tag'; tag.textContent = 'авто';
+    lbl.appendChild(tag);
+  }
+  // при ручной правке снимаем пометку «авто»
+  input.addEventListener('input', function clearAuto() {
+    input.classList.remove('autofilled');
+    var t = grp && grp.querySelector('.auto-tag');
+    if (t) t.remove();
+    input.removeEventListener('input', clearAuto);
+  });
+}
+
+function setAuto(id, value) {
+  if (value === null || value === undefined || value === '' || isNaN(Number(value))) return false;
+  var input = document.getElementById(id);
+  if (!input) return false;
+  input.value = Number(value);
+  markAutofilled(id);
+  return true;
+}
+
+// Возвращает { any, filled:[лейблы], manual:[лейблы] }
+async function applyFundAutofill(ticker) {
+  await loadSnapshots();
+  var fd = FUND_SNAPSHOT && FUND_SNAPSHOT.data;
+  var dd = DIV_SNAPSHOT && DIV_SNAPSHOT.data;
+  var fKey = snapKey(fd, ticker);
+  var dKey = snapKey(dd, ticker);
+  var f = fKey ? fd[fKey] : null;
+  var d = dKey ? dd[dKey] : null;
+  if (!f && !d) return { any: false, filled: [], manual: [] };
+
+  var isPref = fKey && fKey !== ticker;
+  var filled = [];
+
+  if (f) {
+    if (f.sector === 'bank') {
+      var bm = document.getElementById('bankMode');
+      if (bm && !bm.checked) {
+        bm.checked = true;
+        var w = document.getElementById('bankModeWrap');
+        if (w) w.classList.add('checked');
+      }
+    }
+    if (setAuto('pe', f.p_e))  filled.push(AUTO_LABELS.pe);
+    if (setAuto('pb', f.p_b))  filled.push(AUTO_LABELS.pb);
+    if (setAuto('ps', f.p_s))  filled.push(AUTO_LABELS.ps);
+    if (setAuto('roe', f.roe)) filled.push(AUTO_LABELS.roe);
+    if (setAuto('roa', f.roa)) filled.push(AUTO_LABELS.roa);
+  }
+
+  // Дивдоходность: прогноз dohod → TTM dohod → снимок smart-lab
+  var divYield = (d && d.forecast && d.forecast.yield != null) ? d.forecast.yield
+               : (d && d.ttm_yield != null) ? d.ttm_yield
+               : f ? (isPref ? f.div_yield_pref : f.div_yield_common) : null;
+  if (setAuto('div', divYield)) filled.push(AUTO_LABELS.div);
+
+  // Что осталось руками
+  var isBank = f && f.sector === 'bank';
+  var manual = [];
+  if (isBank) {
+    // у банков D/E исключён из скоринга, P/S в снимке нет
+    if (getInputValue('revGrowth') === null) manual.push('рост выручки');
+    if (getInputValue('profitGrowth') === null) manual.push('рост прибыли');
+  } else {
+    if (getInputValue('roe') === null) manual.push('ROE');
+    if (getInputValue('roa') === null) manual.push('ROA');
+    if (getInputValue('de') === null) manual.push('Debt/Equity');
+    if (getInputValue('revGrowth') === null) manual.push('рост выручки');
+    if (getInputValue('profitGrowth') === null) manual.push('рост прибыли');
+  }
+  return { any: filled.length > 0, filled: filled, manual: manual };
+}
+
 // ==================== MOEX ISS API ====================
 const MOEX_BASE = 'https://iss.moex.com/iss';
 var currentTicker = '';
@@ -1022,7 +1131,13 @@ async function loadStockFromMoex(ticker) {
     document.getElementById('tiCap').textContent = marketCap ? formatBigNumber(marketCap) : '—';
     document.getElementById('tiSector').textContent = currentSector;
 
-    status.textContent = 'Данные ' + ticker + ' загружены. Заполни мультипликаторы вручную или дождись подключения автоподтяжки.';
+    var af = await applyFundAutofill(ticker);
+    if (af.any) {
+      status.innerHTML = '<b>' + escHtml(ticker) + '</b>: подставил из базы — ' + af.filled.join(', ') + '.'
+        + (af.manual.length ? ' Добавь вручную: ' + af.manual.join(', ') + '.' : ' Все ключевые метрики заполнены.');
+    } else {
+      status.textContent = 'Данные ' + ticker + ' загружены. В базе нет показателей по этой бумаге — заполни мультипликаторы вручную.';
+    }
     status.className = 'moex-status success';
     renderScore();
   } catch (err) {
