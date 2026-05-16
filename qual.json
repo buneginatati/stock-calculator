@@ -1,0 +1,6 @@
+{
+  "source": "Академия «Инвестиции просто» — экспертная оценка",
+  "updated": "",
+  "_schema": "data: { \"ТИКЕР\": { \"sector\": true|false, \"strategy\": true|false, \"governance\": true|false, \"divPolicy\": true|false, \"cleanHistory\": true|false } } — пять качественных факторов по компании; заполняет Татьяна",
+  "data": {}
+}
