@@ -2,393 +2,242 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Калькулятор акций — Инвестиции просто</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Шрифты внутри investprosto-design.css (Onest + JetBrains Mono) -->
+<link rel="stylesheet" href="investprosto-design.css?v=ref1">
 <style>
-  :root {
-    --green: #3B3FBF;
-    --green-light: #4A4ED0;
-    --green-bg: rgba(59,63,191,0.07);
-    --green-border: rgba(59,63,191,0.15);
-    --green-border-strong: rgba(59,63,191,0.3);
-    --black: #1a1a2e;
-    --dark: #2D2F6B;
-    --muted: #6b7280;
-    --border: #ddd8ce;
-    --bg-card: #ffffff;
-    --bg-page: #F5F0E8;
-    --white: #ffffff;
-    --warm: #E5A100;
-    --warm-bg: rgba(245,200,66,0.12);
-    --warm-border: rgba(245,200,66,0.35);
-    --red: #c0392b;
-    --red-bg: rgba(192,57,43,0.06);
-    --red-border: rgba(192,57,43,0.15);
-    --score-green: #2e8b57;
-    --score-green-bg: rgba(46,139,87,0.10);
-    --score-green-border: rgba(46,139,87,0.30);
-    --score-yellow: #d49a00;
-    --score-yellow-bg: rgba(212,154,0,0.10);
-    --score-yellow-border: rgba(212,154,0,0.30);
-    --score-red: #c0392b;
-    --score-red-bg: rgba(192,57,43,0.08);
-    --score-red-border: rgba(192,57,43,0.30);
-  }
+  /* ════════ Акциатор — стиль по образцу: чёрный фон, пастельные плитки ════════ */
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg-page); color: var(--black);
-    min-height: 100vh; padding: 0 0 80px;
-    -webkit-font-smoothing: antialiased;
+  /* Поля-плитки */
+  .input-group {
+    margin: 0 14px 10px;
+    padding: 14px 16px 16px;
+    border-radius: 22px;
+    border: none;
+    background: var(--tile-blue);
   }
-
-  /* HEADER */
-  .header {
-    padding: 28px 20px 20px; display: flex; align-items: center; gap: 14px;
-    border-bottom: 1px solid var(--border);
+  .input-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin: 0 14px 10px;
   }
-  .header-logo {
-    width: 44px; height: 44px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .header-logo svg { width: 40px; height: 40px; }
-  .header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: var(--black); }
-  .header p { font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 500; }
+  .input-row .input-group { margin: 0; }
+  .input-group.tint-blue  { background: var(--tile-blue); }
+  .input-group.tint-mint  { background: var(--tile-mint); }
+  .input-group.tint-lav   { background: var(--tile-lav); }
+  .input-group.tint-cream { background: var(--tile-cream); }
+  .input-group.tint-coral { background: var(--tile-pink); }
 
-  /* TABS */
-  .tabs {
-    display: flex; gap: 0; padding: 0 20px;
-    border-bottom: 1px solid var(--border); overflow-x: auto;
-    -webkit-overflow-scrolling: touch; scrollbar-width: none;
-  }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab {
-    padding: 14px 20px; border: none; background: transparent;
-    color: var(--muted); font-size: 13px; font-weight: 600;
-    cursor: pointer; white-space: nowrap; transition: all 0.2s;
-    border-bottom: 2px solid transparent; letter-spacing: 0.2px;
-    font-family: inherit;
-  }
-  .tab.active { color: var(--green); border-bottom-color: var(--green); }
-  .tab:hover { color: var(--black); }
-
-  /* CONTENT */
-  .content { padding: 20px; max-width: 600px; margin: 0 auto; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* SECTION */
-  .section-title {
-    font-size: 11px; font-weight: 700; color: var(--green); margin: 0 0 18px;
-    text-transform: uppercase; letter-spacing: 1.5px;
-  }
-  .section-title-warm { color: var(--warm); }
-
-  /* INPUT GROUPS */
-  .input-group { margin-bottom: 18px; }
   .input-label {
     display: flex; align-items: center; gap: 6px;
-    font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 8px;
-    text-transform: uppercase; letter-spacing: 0.6px;
+    font-size: 10.5px; font-weight: 700;
+    color: var(--on-tile-soft);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 8px;
   }
-  .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .input-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .input-field {
-    width: 100%; padding: 12px 14px; background: var(--bg-card);
-    border: 1.5px solid var(--border); border-radius: 10px;
-    color: var(--black); font-size: 16px; font-weight: 600; font-family: inherit;
-    outline: none; transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    width: 100%; background: transparent; border: none; outline: none;
+    color: var(--on-tile);
+    font-family: var(--font-mono); font-size: 22px; font-weight: 800;
+    letter-spacing: -0.02em; padding: 0;
   }
-  .input-field:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-bg), 0 1px 2px rgba(0,0,0,0.04); }
-  .input-field::placeholder { color: #c0c0c0; font-weight: 400; }
+  .input-field::placeholder { color: rgba(0,0,0,0.34); font-weight: 600; font-size: 16px; }
+  .input-field:focus { box-shadow: 0 2px 0 -1px rgba(0,0,0,0.45); }
+  .input-field.zone-green, .input-field.zone-yellow, .input-field.zone-red { background: transparent; }
   .input-wrap { position: relative; }
+  .input-wrap .input-field { padding-right: 26px; }
   .input-suffix {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    color: var(--muted); font-size: 13px; font-weight: 500; pointer-events: none;
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    color: var(--on-tile-soft); font-size: 14px; font-weight: 700;
+    pointer-events: none; font-family: var(--font-mono);
   }
-  .input-wrap .input-field { padding-right: 38px; }
-  .input-field.zone-green { border-color: var(--score-green-border); background: var(--score-green-bg); }
-  .input-field.zone-yellow { border-color: var(--score-yellow-border); background: var(--score-yellow-bg); }
-  .input-field.zone-red { border-color: var(--score-red-border); background: var(--score-red-bg); }
-
-  /* HINT BUTTON */
   .hint-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: transparent; border: 1.5px solid var(--green-border-strong);
-    color: var(--green); font-size: 10px; font-weight: 700;
-    cursor: pointer; flex-shrink: 0; line-height: 1; transition: all 0.2s;
-    font-family: inherit;
-  }
-  .hint-btn:hover { background: var(--green); color: var(--white); border-color: var(--green); }
-
-  /* HINT POPUP */
-  .hint-popup {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 9999; align-items: flex-end; justify-content: center;
-    background: rgba(0,0,0,0.3); padding: 16px;
-  }
-  .hint-popup.show { display: flex; }
-  .hint-content {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 16px 16px 4px 4px; padding: 24px; max-width: 400px;
-    width: 100%; font-size: 14px; line-height: 1.7; color: var(--dark);
-    max-height: 60vh; overflow-y: auto;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
-  }
-  .hint-content b { color: var(--black); }
-  .hint-close {
-    display: block; width: 100%; margin-top: 16px; padding: 12px;
-    background: var(--green); border: none; border-radius: 8px;
-    color: var(--white); font-size: 14px; font-weight: 600; cursor: pointer;
-    font-family: inherit;
+    background: transparent; border: 1.2px solid rgba(0,0,0,0.38);
+    color: rgba(0,0,0,0.55);
   }
 
-  /* RESULTS */
-  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .result-card {
-    padding: 16px 18px; border-radius: 12px; background: var(--bg-card);
-    border: 1px solid var(--border);
+  /* Поиск акции */
+  .moex-search-wrap { display: flex; gap: 8px; }
+  .moex-search-wrap .input-field {
+    flex: 1; font-size: 16px; font-weight: 600; padding: 10px 12px;
+    background: rgba(255,255,255,0.55); border-radius: 12px;
   }
-  .result-card.highlight {
-    background: var(--green-bg); border-color: var(--green-border-strong);
+  .moex-search-btn {
+    padding: 10px 18px; background: var(--acc-blue); color: #FFFFFF;
+    border: none; border-radius: 12px;
+    font-family: var(--font-sans); font-size: 14px; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
   }
-  .result-label {
-    font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 6px;
-    display: flex; align-items: center; gap: 5px;
-    text-transform: uppercase; letter-spacing: 0.5px;
+  .moex-search-btn:hover { background: var(--acc-blue-deep); }
+  .moex-status { font-size: 11px; color: var(--on-tile-soft); padding: 8px 0 0; font-weight: 600; }
+  .moex-status.error { color: #8a2920; }
+  .moex-status.success { color: #1a5638; }
+  .auto-tag { display:inline-block; margin-left:6px; font-size:9px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#fff; background:#3429D2; border-radius:6px; padding:1px 5px; vertical-align:middle; }
+  .input-field.autofilled { box-shadow: inset 3px 0 0 0 #3429D2; }
+  .moex-results { margin-top: 8px; max-height: 280px; overflow-y: auto; }
+  .moex-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 12px; margin-bottom: 6px; border-radius: 12px;
+    background: rgba(255,255,255,0.5); border: none; cursor: pointer;
   }
-  .result-value { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.5px; }
-  .result-card.highlight .result-value { color: var(--green); }
-  .result-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .moex-item:hover { background: rgba(255,255,255,0.8); }
+  .moex-item-ticker {
+    min-width: 56px; padding: 4px 7px; border-radius: 7px;
+    background: var(--acc-blue); color: #FFFFFF;
+    font-family: var(--font-mono); font-weight: 700; font-size: 11px; text-align: center;
+  }
+  .moex-item-body { flex: 1; min-width: 0; }
+  .moex-item-name { font-size: 14px; font-weight: 700; color: var(--on-tile); }
+  .moex-item-details { font-size: 10.5px; color: var(--on-tile-soft); margin-top: 2px; }
+  .moex-item-arrow { flex-shrink: 0; width: 12px; height: 14px; color: rgba(0,0,0,0.4); }
+  .moex-show-all-btn {
+    display: block; width: 100%; margin-top: 6px; padding: 10px;
+    background: rgba(255,255,255,0.5); border: none; border-radius: 12px;
+    color: var(--acc-blue); font-family: var(--font-sans);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+  }
 
-  /* SCORE BLOCK */
+  /* Загруженная акция */
+  .ticker-info {
+    margin: 0 14px 10px; padding: 16px 18px;
+    background: var(--tile-cream); border-radius: 22px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .ticker-info-name { font-size: 16px; font-weight: 800; color: var(--on-tile); }
+  .ticker-info-ticker {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    color: #FFFFFF; background: var(--acc-blue);
+    padding: 3px 8px; border-radius: 7px; margin-left: 8px;
+  }
+  .ticker-info-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--on-tile-soft); }
+  .ticker-info-meta b { color: var(--on-tile); font-family: var(--font-mono); }
+
+  /* Инфо-блок */
+  .info-box {
+    margin: 0 14px 10px; padding: 12px 16px;
+    background: var(--acc-blue-bg);
+    border: 1px solid var(--acc-blue-line);
+    border-radius: 16px;
+    font-size: 12px; line-height: 1.5; color: var(--text-dim);
+  }
+  .info-box b { color: var(--text); }
+
+  /* Качественные факторы — плитки-чекбоксы */
+  .qual-list { display: flex; flex-direction: column; gap: 8px; margin: 0 14px; }
+  .qual-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 14px 16px; border-radius: 18px;
+    background: var(--tile-lav); border: none; cursor: pointer;
+    transition: filter 0.12s;
+  }
+  .qual-item:hover { filter: brightness(0.97); }
+  .qual-item.checked { background: var(--tile-mint); }
+  .qual-item input { margin-top: 2px; flex-shrink: 0; accent-color: var(--acc-blue); width: 17px; height: 17px; }
+  .qual-item-text { color: var(--on-tile); line-height: 1.5; font-size: 13px; }
+  .qual-item-text b { color: var(--on-tile); }
+  #bankModeWrap { background: var(--tile-cream); margin: 0 14px 4px; }
+
+  .export-btn {
+    display: block; width: calc(100% - 28px); margin: 16px 14px 4px;
+    padding: 15px; background: var(--acc-blue); color: #FFFFFF;
+    border: none; border-radius: 16px;
+    font-family: var(--font-sans); font-size: 15px; font-weight: 700;
+    cursor: pointer;
+  }
+  .export-btn:hover { background: var(--acc-blue-deep); }
+
+  /* SCORE HERO — итоговая оценка, ультрамариновая плитка */
   .score-hero {
-    padding: 24px 20px; border-radius: 16px; background: var(--bg-card);
-    border: 1px solid var(--border); margin-bottom: 16px; text-align: center;
-    position: relative; overflow: hidden;
+    margin: 0 14px 12px; padding: 26px 22px;
+    background: var(--acc-blue); border: none;
+    border-radius: 26px; text-align: center; color: #FFFFFF;
   }
-  .score-hero.zone-green { background: var(--score-green-bg); border-color: var(--score-green-border); }
-  .score-hero.zone-yellow { background: var(--score-yellow-bg); border-color: var(--score-yellow-border); }
-  .score-hero.zone-red { background: var(--score-red-bg); border-color: var(--score-red-border); }
+  .score-hero.zone-green  { background: #2E8B57; }
+  .score-hero.zone-yellow { background: #C99A2E; }
+  .score-hero.zone-red    { background: #B5524A; }
   .score-label {
-    font-size: 11px; color: var(--muted); font-weight: 700;
-    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
   }
-  .score-value { font-size: 56px; font-weight: 800; letter-spacing: -2px; line-height: 1; color: var(--black); }
-  .score-value-max { font-size: 24px; color: var(--muted); font-weight: 700; }
-  .score-verdict { font-size: 15px; font-weight: 700; margin-top: 8px; }
-  .score-hero.zone-green .score-verdict { color: var(--score-green); }
-  .score-hero.zone-yellow .score-verdict { color: var(--score-yellow); }
-  .score-hero.zone-red .score-verdict { color: var(--score-red); }
-  .score-tagline { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+  .score-value { font-size: 60px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; color: #FFFFFF; font-family: var(--font-mono); }
+  .score-value-max { font-size: 24px; color: rgba(255,255,255,0.6); font-weight: 700; }
+  .score-verdict { font-size: 16px; font-weight: 800; margin-top: 10px; color: #FFFFFF; }
+  .score-tagline { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 6px; line-height: 1.5; }
 
-  /* BLOCKS BREAKDOWN */
+  /* Разбор по блокам — пастельные плитки */
   .breakdown-block {
-    padding: 16px; border-radius: 12px; background: var(--bg-card);
-    border: 1px solid var(--border); margin-bottom: 12px;
+    margin: 0 14px 10px; padding: 16px 18px;
+    background: var(--tile-mint); border: none; border-radius: 20px;
   }
-  .breakdown-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
-  }
-  .breakdown-title {
-    font-size: 13px; font-weight: 700; color: var(--black);
-  }
-  .breakdown-points {
-    font-size: 13px; font-weight: 800; color: var(--green);
-  }
-  .breakdown-bar-wrap {
-    height: 6px; background: var(--green-bg); border-radius: 3px;
-    margin-bottom: 12px; overflow: hidden;
-  }
-  .breakdown-bar { height: 100%; background: var(--green); border-radius: 3px; transition: width 0.4s ease; }
+  .breakdown-block:nth-of-type(odd)  { background: var(--tile-lav); }
+  .breakdown-block:nth-of-type(even) { background: var(--tile-cream); }
+  .breakdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .breakdown-title { font-size: 14px; font-weight: 800; color: var(--on-tile); }
+  .breakdown-points { font-family: var(--font-mono); font-weight: 700; font-size: 13px; color: var(--on-tile-soft); }
+  .breakdown-bar-wrap { height: 6px; background: rgba(0,0,0,0.12); border-radius: 999px; overflow: hidden; margin-bottom: 10px; }
+  .breakdown-bar { height: 100%; background: var(--acc-blue); border-radius: 999px; transition: width 0.4s ease; }
   .metric-row {
     display: flex; justify-content: space-between; align-items: center;
     padding: 8px 0; font-size: 13px;
   }
-  .metric-row + .metric-row { border-top: 1px solid var(--border); }
-  .metric-name { color: var(--dark); font-weight: 500; }
+  .metric-row + .metric-row { border-top: 1px solid rgba(0,0,0,0.12); }
+  .metric-name { color: var(--on-tile-soft); font-weight: 600; }
   .metric-value-wrap { display: flex; align-items: center; gap: 8px; }
-  .metric-value { font-weight: 700; color: var(--black); font-size: 13px; }
+  .metric-value { font-weight: 800; color: var(--on-tile); font-size: 13px; font-family: var(--font-mono); }
   .metric-zone {
-    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    width: 10px; height: 10px; border-radius: 50%; display: inline-block;
   }
-  .metric-zone.zone-green { background: var(--score-green); }
-  .metric-zone.zone-yellow { background: var(--score-yellow); }
-  .metric-zone.zone-red { background: var(--score-red); }
-  .metric-zone.zone-gray { background: #d0d0d0; }
+  .metric-zone.zone-green  { background: #2E8B57; }
+  .metric-zone.zone-yellow { background: #C99A2E; }
+  .metric-zone.zone-red    { background: #B5524A; }
+  .metric-zone.zone-gray   { background: rgba(0,0,0,0.25); }
 
-  /* QUALITATIVE CHECKBOXES */
-  .qual-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-  .qual-item {
-    display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
-    background: var(--bg-card); border: 1.5px solid var(--border);
-    border-radius: 10px; cursor: pointer; transition: all 0.15s; font-size: 13px;
+  /* Сравнение */
+  .compare-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 14px; margin-bottom: 4px; flex-wrap: wrap; gap: 8px;
   }
-  .qual-item:hover { border-color: var(--green-border-strong); }
-  .qual-item.checked { background: var(--green-bg); border-color: var(--green-border-strong); }
-  .qual-item input { margin-top: 2px; flex-shrink: 0; accent-color: var(--green); }
-  .qual-item-text { color: var(--dark); line-height: 1.5; }
-
-  /* COMPARE */
-  .compare-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
-  .btn-add {
-    padding: 8px 18px; border-radius: 8px; border: 1.5px solid var(--green);
-    background: transparent; color: var(--green); font-size: 12px;
-    font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
-    font-family: inherit;
-  }
-  .btn-add:hover { background: var(--green); color: var(--white); }
   .compare-card {
-    padding: 16px; border-radius: 12px; background: var(--bg-card);
-    border: 1px solid var(--border); margin-bottom: 12px;
+    margin: 0 14px 10px; padding: 16px 18px;
+    background: var(--tile-lav); border: none; border-radius: 20px;
   }
+  .compare-card:nth-child(even) { background: var(--tile-mint); }
   .compare-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .compare-name {
-    background: transparent; border: none; color: var(--black);
-    font-size: 15px; font-weight: 700; outline: none; width: 70%; font-family: inherit;
-  }
-  .btn-remove { background: transparent; border: none; color: var(--red); font-size: 18px; cursor: pointer; opacity: 0.5; font-family: inherit; }
-  .btn-remove:hover { opacity: 1; }
-  .compare-stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; }
+  .compare-name { background: transparent; border: none; color: var(--on-tile); font-size: 15px; font-weight: 800; outline: none; width: 70%; font-family: var(--font-sans); }
+  .btn-remove { background: transparent; border: none; color: rgba(0,0,0,0.5); font-size: 22px; cursor: pointer; line-height: 1; }
+  .btn-remove:hover { color: #8a2920; }
+  .compare-stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; color: var(--on-tile-soft); }
   .compare-chip {
-    padding: 4px 10px; border-radius: 8px; background: var(--green-bg);
-    color: var(--dark); font-weight: 600; border: 1px solid var(--green-border);
+    background: rgba(255,255,255,0.5); padding: 4px 9px; border-radius: 8px;
+    font-family: var(--font-mono); font-weight: 700; color: var(--on-tile);
   }
   .compare-score-row {
-    padding-top: 12px; border-top: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.12);
   }
-  .compare-score-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-  .compare-score-value { font-size: 26px; font-weight: 800; color: var(--green); letter-spacing: -1px; }
+  .compare-score-label { font-size: 11px; color: var(--on-tile-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .compare-score-value { font-size: 26px; font-weight: 800; color: var(--on-tile); letter-spacing: -0.03em; font-family: var(--font-mono); }
   .compare-verdict-pill {
-    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 12px;
-    text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
   }
-  .compare-verdict-pill.zone-green { background: var(--score-green-bg); color: var(--score-green); }
-  .compare-verdict-pill.zone-yellow { background: var(--score-yellow-bg); color: var(--score-yellow); }
-  .compare-verdict-pill.zone-red { background: var(--score-red-bg); color: var(--score-red); }
+  .compare-verdict-pill.zone-green  { background: #2E8B57; color: #FFFFFF; }
+  .compare-verdict-pill.zone-yellow { background: #C99A2E; color: #FFFFFF; }
+  .compare-verdict-pill.zone-red    { background: #B5524A; color: #FFFFFF; }
+  .btn-add {
+    padding: 9px 16px; background: var(--acc-blue); color: #FFFFFF;
+    border: none; border-radius: 12px;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  .btn-add:hover { background: var(--acc-blue-deep); }
 
-  /* MOEX SEARCH */
-  .moex-search-wrap { display: flex; gap: 8px; }
-  .moex-input { flex: 1; font-weight: 500 !important; font-size: 14px !important; }
-  .moex-search-btn {
-    padding: 12px 20px; background: var(--green); color: var(--white);
-    border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
-    cursor: pointer; white-space: nowrap; transition: all 0.2s;
-    font-family: inherit; letter-spacing: 0.3px;
+  /* Заголовки секций внутри вкладок */
+  .section-title {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    margin: 18px 14px 10px; padding: 0;
+    text-transform: uppercase; letter-spacing: 0.06em;
   }
-  .moex-search-btn:hover { background: var(--green-light); }
-  .moex-search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .moex-results { margin-top: 10px; max-height: 380px; overflow-y: auto; scroll-behavior: smooth; }
-  .moex-show-all-btn {
-    display: block; width: 100%; margin-top: 6px; padding: 12px;
-    background: var(--green-bg); border: 1.5px dashed var(--green-border-strong);
-    border-radius: 10px; color: var(--green); font-size: 13px;
-    font-weight: 700; cursor: pointer; font-family: inherit;
-    transition: all 0.2s; letter-spacing: 0.2px;
-  }
-  .moex-show-all-btn:hover { background: var(--green); color: var(--white); border-style: solid; }
-  .moex-item {
-    padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
-    margin-bottom: 6px; cursor: pointer; transition: all 0.15s;
-    background: var(--bg-card);
-  }
-  .moex-item:hover { border-color: var(--green-border-strong); background: var(--green-bg); }
-  .moex-item-name { font-size: 14px; font-weight: 700; color: var(--black); }
-  .moex-item-ticker { font-size: 12px; color: var(--green); font-weight: 600; margin-left: 6px; }
-  .moex-item-details { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-  .moex-status { margin-top: 8px; font-size: 12px; color: var(--muted); min-height: 18px; }
-  .moex-status.error { color: var(--red); }
-  .moex-status.success { color: var(--green); }
-
-  /* INFO BOX */
-  .info-box {
-    padding: 14px 16px; border-radius: 12px;
-    background: var(--warm-bg); border: 1px solid var(--warm-border);
-    margin-bottom: 16px; font-size: 13px; color: var(--dark); line-height: 1.55;
-  }
-  .info-box b { color: var(--black); }
-
-  /* EXPORT BUTTON */
-  .export-btn {
-    width: 100%; padding: 14px; margin-top: 8px;
-    background: var(--white); color: var(--green);
-    border: 1.5px solid var(--green); border-radius: 10px;
-    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
-    font-family: inherit; letter-spacing: 0.3px; text-transform: uppercase;
-  }
-  .export-btn:hover { background: var(--green); color: var(--white); }
-
-  /* SECURITY INFO BLOCK */
-  .ticker-info {
-    padding: 16px 18px; border-radius: 12px;
-    background: var(--green-bg); border: 1px solid var(--green-border-strong);
-    margin-bottom: 16px;
-  }
-  .ticker-info-name { font-size: 16px; font-weight: 800; color: var(--black); }
-  .ticker-info-ticker { color: var(--green); font-weight: 700; margin-left: 6px; font-size: 13px; }
-  .ticker-info-meta {
-    margin-top: 8px; font-size: 12px; color: var(--muted);
-    display: flex; gap: 12px; flex-wrap: wrap;
-  }
-  .ticker-info-meta span b { color: var(--dark); font-weight: 600; }
-
-  /* FOOTER */
-  .footer {
-    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);
-    text-align: center; font-size: 11px; color: var(--muted); opacity: 0.7;
-    line-height: 1.7; letter-spacing: 0.2px;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 400px) {
-    .results-grid { grid-template-columns: 1fr; }
-    .result-value { font-size: 19px; }
-    .score-value { font-size: 48px; }
-  }
-
-  /* ACCESS GATE */
-  .access-gate {
-    position: fixed; inset: 0;
-    background: linear-gradient(135deg, #f3f8f5 0%, #ffffff 100%);
-    z-index: 99999;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-  }
-  .access-gate-card {
-    background: var(--white); border-radius: 16px; padding: 32px 24px;
-    max-width: 400px; width: 100%; text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-    border: 1px solid var(--border);
-  }
-  .access-gate-card h2 {
-    font-size: 18px; font-weight: 800; color: var(--black);
-    margin-bottom: 12px; letter-spacing: -0.3px;
-  }
-  .access-gate-card p { font-size: 14px; color: var(--dark); line-height: 1.6; margin-bottom: 18px; }
-  .access-gate-card input {
-    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
-    border-radius: 10px; font-size: 15px; font-family: inherit; font-weight: 500;
-    margin-bottom: 12px; outline: none;
-  }
-  .access-gate-card input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-bg); }
-  .access-gate-card button {
-    width: 100%; padding: 12px; background: var(--green); color: var(--white);
-    border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
-    cursor: pointer; font-family: inherit; transition: opacity 0.2s;
-  }
-  .access-gate-card button:hover { opacity: 0.9; }
-  .access-gate-error { color: var(--red); font-size: 13px; margin-top: 8px; }
-  .access-gate-footer { font-size: 11px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
-  .access-gate-hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -410,22 +259,25 @@
 </div>
 
 <!-- HEADER -->
-<div class="header">
-  <div class="header-logo"><svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
-    <rect width="44" height="44" rx="12" fill="#3B3FBF"/>
-    <path d="M8 22c0-4.4 3.1-8 7-8s7 3.6 7 8-3.1 8-7 8-7-3.6-7-8zm14 0c0-4.4 3.1-8 7-8s7 3.6 7 8-3.1 8-7 8-7-3.6-7-8z" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
-  </svg></div>
-  <div>
-    <h1>Калькулятор акций</h1>
-    <p>Академия «Инвестиции просто»</p>
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">
+      <svg viewBox="0 0 20 20" fill="none">
+        <path d="M3 17 L7 10 L11 13 L17 4 M17 4 H12 M17 4 V9" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Акциатор</h1>
+      <p>Скоринг акций · Академия</p>
+    </div>
   </div>
-</div>
+</header>
 
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('calc')">Калькулятор</button>
-  <button class="tab" onclick="switchTab('score')">Скоринг</button>
-  <button class="tab" onclick="switchTab('compare')">Сравнение</button>
+<!-- TOP TABS — скрыты, в DOM для совместимости -->
+<div class="tabs" role="tablist" aria-label="Разделы Акциатора">
+  <button class="tab active" data-tab="calc"    role="tab" aria-selected="true"  onclick="switchTab('calc')">Калькулятор</button>
+  <button class="tab"        data-tab="score"   role="tab" aria-selected="false" onclick="switchTab('score')">Скоринг</button>
+  <button class="tab"        data-tab="compare" role="tab" aria-selected="false" onclick="switchTab('compare')">Сравнение</button>
 </div>
 
 <!-- CONTENT -->
@@ -436,7 +288,7 @@
 
     <div class="section-title">Поиск акции</div>
 
-    <div class="input-group">
+    <div class="input-group tint-blue">
       <div class="input-label">Тикер или название <button class="hint-btn" data-hint="ticker">?</button></div>
       <div class="moex-search-wrap">
         <input class="input-field moex-input" type="text" id="moexSearch" placeholder="напр. SBER, Лукойл, Газпром" autocomplete="off">
@@ -467,26 +319,26 @@
     <div class="section-title" style="margin-top:24px">Финансовые показатели</div>
 
     <div class="info-box">
-      <b>Откуда брать цифры:</b> отчётность МСФО на сайте эмитента, smart-lab.ru, conomy.ru или раздел «Аналитика» в брокерском приложении. Скоро подключим автоподтяжку фундаменталки — будет считаться само.
+      <b>Автоподтяжка включена.</b> Выбери акцию из поиска — P/E, P/B, ROE, ROA, P/S и дивдоходность подставятся сами (снимок smart-lab.ru и dohod.ru). Поля с пометкой «авто» можно править. Чего в базе нет (Debt/Equity, рост выручки и прибыли) — добавь вручную из отчётности МСФО эмитента.
     </div>
 
     <div class="input-row">
-      <div class="input-group">
+      <div class="input-group tint-cream">
         <div class="input-label">P/E <button class="hint-btn" data-hint="pe">?</button></div>
         <input class="input-field" type="number" id="pe" step="0.1" placeholder="напр. 4.5">
       </div>
-      <div class="input-group">
+      <div class="input-group tint-mint">
         <div class="input-label">P/B <button class="hint-btn" data-hint="pb">?</button></div>
         <input class="input-field" type="number" id="pb" step="0.1" placeholder="напр. 0.8">
       </div>
     </div>
 
     <div class="input-row">
-      <div class="input-group">
+      <div class="input-group tint-lav">
         <div class="input-label">P/S <button class="hint-btn" data-hint="ps">?</button></div>
         <input class="input-field" type="number" id="ps" step="0.1" placeholder="напр. 1.2">
       </div>
-      <div class="input-group">
+      <div class="input-group tint-cream">
         <div class="input-label">ROE <button class="hint-btn" data-hint="roe">?</button></div>
         <div class="input-wrap">
           <input class="input-field" type="number" id="roe" step="0.1" placeholder="напр. 18">
@@ -496,28 +348,28 @@
     </div>
 
     <div class="input-row">
-      <div class="input-group">
+      <div class="input-group tint-mint">
         <div class="input-label">ROA <button class="hint-btn" data-hint="roa">?</button></div>
         <div class="input-wrap">
           <input class="input-field" type="number" id="roa" step="0.1" placeholder="напр. 8">
           <span class="input-suffix">%</span>
         </div>
       </div>
-      <div class="input-group" id="deWrap">
+      <div class="input-group tint-lav" id="deWrap">
         <div class="input-label">Debt/Equity <button class="hint-btn" data-hint="de">?</button></div>
         <input class="input-field" type="number" id="de" step="0.01" placeholder="напр. 0.45">
       </div>
     </div>
 
     <div class="input-row">
-      <div class="input-group">
+      <div class="input-group tint-coral">
         <div class="input-label">Дивдоходность <button class="hint-btn" data-hint="div">?</button></div>
         <div class="input-wrap">
           <input class="input-field" type="number" id="div" step="0.1" placeholder="напр. 9">
           <span class="input-suffix">%</span>
         </div>
       </div>
-      <div class="input-group">
+      <div class="input-group tint-blue">
         <div class="input-label">Рост выручки YoY <button class="hint-btn" data-hint="revGrowth">?</button></div>
         <div class="input-wrap">
           <input class="input-field" type="number" id="revGrowth" step="0.1" placeholder="напр. 12">
@@ -526,7 +378,7 @@
       </div>
     </div>
 
-    <div class="input-group">
+    <div class="input-group tint-cream">
       <div class="input-label">Рост чистой прибыли YoY <button class="hint-btn" data-hint="profitGrowth">?</button></div>
       <div class="input-wrap">
         <input class="input-field" type="number" id="profitGrowth" step="0.1" placeholder="напр. 18">
@@ -670,11 +522,27 @@
   </div>
 
   <div class="footer">
-    Калькулятор акций · Академия «Инвестиции просто»<br>
+    16+ · Академия «Инвестиции просто» · Акциатор · v3.0<br>
     Не является индивидуальной инвестиционной рекомендацией.
   </div>
 
 </div>
+
+<!-- BOTTOM TAB BAR -->
+<nav class="bottom-tabs" aria-label="Главная навигация">
+  <button class="bottom-tab active" data-tab="calc" onclick="switchTab('calc')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7 H16 M8 12 H10 M12 12 H14 M16 12 V16 M8 16 H10 M12 16 H14"/></svg>
+    <span>Калькулятор</span>
+  </button>
+  <button class="bottom-tab" data-tab="score" onclick="switchTab('score')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14"/></svg>
+    <span>Скоринг</span>
+  </button>
+  <button class="bottom-tab" data-tab="compare" onclick="switchTab('compare')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="8" height="12" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/></svg>
+    <span>Сравнение</span>
+  </button>
+</nav>
 
 <script>
 // ==================== ACCESS GATE (Telegram + Supabase) ====================
@@ -968,13 +836,15 @@ function renderScore() {
 
 // ==================== ТАБЫ ====================
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.tab, .bottom-tab').forEach(function(t){
+    var on = t.dataset && t.dataset.tab === name;
+    t.classList.toggle('active', on);
+    if (t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
   document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
-  var tabs = document.querySelectorAll('.tab');
-  var idx = name === 'calc' ? 0 : (name === 'score' ? 1 : 2);
-  tabs[idx].classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
   if (name === 'score') renderScore();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== ПОДСКАЗКИ ====================
@@ -1012,6 +882,113 @@ if (bankCheckbox) {
     if (wrap) wrap.classList.toggle('checked', bankCheckbox.checked);
     renderScore();
   });
+}
+
+// ==================== АВТОПОДТЯЖКА ФУНДАМЕНТАЛКИ ====================
+// Снимок smart-lab.ru (мультипликаторы) и dohod.ru (дивиденды) — те же файлы,
+// что в Фундаменталке. Подключение к Supabase для этого не требуется.
+var FUND_SNAPSHOT = null, DIV_SNAPSHOT = null, snapshotPromise = null;
+
+function loadSnapshots() {
+  if (snapshotPromise) return snapshotPromise;
+  snapshotPromise = Promise.all([
+    fetch('fundamentals.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }),
+    fetch('dividends.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+  ]).then(function(res){ FUND_SNAPSHOT = res[0]; DIV_SNAPSHOT = res[1]; });
+  return snapshotPromise;
+}
+loadSnapshots(); // прогрев на старте
+
+// Ключ в снимке: точное совпадение, иначе для префа (SBERP → SBER)
+function snapKey(map, ticker) {
+  if (!map || !ticker) return null;
+  if (map[ticker]) return ticker;
+  if (/^[A-Z]+P$/.test(ticker) && map[ticker.slice(0, -1)]) return ticker.slice(0, -1);
+  return null;
+}
+
+var AUTO_LABELS = { pe:'P/E', pb:'P/B', ps:'P/S', roe:'ROE', roa:'ROA', div:'Дивдоходность' };
+
+function markAutofilled(id) {
+  var input = document.getElementById(id);
+  if (!input) return;
+  input.classList.add('autofilled');
+  var grp = input.closest('.input-group');
+  var lbl = grp && grp.querySelector('.input-label');
+  if (lbl && !lbl.querySelector('.auto-tag')) {
+    var tag = document.createElement('span');
+    tag.className = 'auto-tag'; tag.textContent = 'авто';
+    lbl.appendChild(tag);
+  }
+  // при ручной правке снимаем пометку «авто»
+  input.addEventListener('input', function clearAuto() {
+    input.classList.remove('autofilled');
+    var t = grp && grp.querySelector('.auto-tag');
+    if (t) t.remove();
+    input.removeEventListener('input', clearAuto);
+  });
+}
+
+function setAuto(id, value) {
+  if (value === null || value === undefined || value === '' || isNaN(Number(value))) return false;
+  var input = document.getElementById(id);
+  if (!input) return false;
+  input.value = Number(value);
+  markAutofilled(id);
+  return true;
+}
+
+// Возвращает { any, filled:[лейблы], manual:[лейблы] }
+async function applyFundAutofill(ticker) {
+  await loadSnapshots();
+  var fd = FUND_SNAPSHOT && FUND_SNAPSHOT.data;
+  var dd = DIV_SNAPSHOT && DIV_SNAPSHOT.data;
+  var fKey = snapKey(fd, ticker);
+  var dKey = snapKey(dd, ticker);
+  var f = fKey ? fd[fKey] : null;
+  var d = dKey ? dd[dKey] : null;
+  if (!f && !d) return { any: false, filled: [], manual: [] };
+
+  var isPref = fKey && fKey !== ticker;
+  var filled = [];
+
+  if (f) {
+    if (f.sector === 'bank') {
+      var bm = document.getElementById('bankMode');
+      if (bm && !bm.checked) {
+        bm.checked = true;
+        var w = document.getElementById('bankModeWrap');
+        if (w) w.classList.add('checked');
+      }
+    }
+    if (setAuto('pe', f.p_e))  filled.push(AUTO_LABELS.pe);
+    if (setAuto('pb', f.p_b))  filled.push(AUTO_LABELS.pb);
+    if (setAuto('ps', f.p_s))  filled.push(AUTO_LABELS.ps);
+    if (setAuto('roe', f.roe)) filled.push(AUTO_LABELS.roe);
+    if (setAuto('roa', f.roa)) filled.push(AUTO_LABELS.roa);
+  }
+
+  // Дивдоходность: прогноз dohod → TTM dohod → снимок smart-lab
+  var divYield = (d && d.forecast && d.forecast.yield != null) ? d.forecast.yield
+               : (d && d.ttm_yield != null) ? d.ttm_yield
+               : f ? (isPref ? f.div_yield_pref : f.div_yield_common) : null;
+  if (setAuto('div', divYield)) filled.push(AUTO_LABELS.div);
+
+  // Что осталось руками
+  var isBank = f && f.sector === 'bank';
+  var manual = [];
+  if (isBank) {
+    // у банков D/E исключён из скоринга, P/S в снимке нет
+    if (getInputValue('revGrowth') === null) manual.push('рост выручки');
+    if (getInputValue('profitGrowth') === null) manual.push('рост прибыли');
+  } else {
+    if (getInputValue('roe') === null) manual.push('ROE');
+    if (getInputValue('roa') === null) manual.push('ROA');
+    if (getInputValue('de') === null) manual.push('Debt/Equity');
+    if (getInputValue('revGrowth') === null) manual.push('рост выручки');
+    if (getInputValue('profitGrowth') === null) manual.push('рост прибыли');
+  }
+  return { any: filled.length > 0, filled: filled, manual: manual };
 }
 
 // ==================== MOEX ISS API ====================
@@ -1154,7 +1131,13 @@ async function loadStockFromMoex(ticker) {
     document.getElementById('tiCap').textContent = marketCap ? formatBigNumber(marketCap) : '—';
     document.getElementById('tiSector').textContent = currentSector;
 
-    status.textContent = 'Данные ' + ticker + ' загружены. Заполни мультипликаторы вручную или дождись подключения автоподтяжки.';
+    var af = await applyFundAutofill(ticker);
+    if (af.any) {
+      status.innerHTML = '<b>' + escHtml(ticker) + '</b>: подставил из базы — ' + af.filled.join(', ') + '.'
+        + (af.manual.length ? ' Добавь вручную: ' + af.manual.join(', ') + '.' : ' Все ключевые метрики заполнены.');
+    } else {
+      status.textContent = 'Данные ' + ticker + ' загружены. В базе нет показателей по этой бумаге — заполни мультипликаторы вручную.';
+    }
     status.className = 'moex-status success';
     renderScore();
   } catch (err) {
